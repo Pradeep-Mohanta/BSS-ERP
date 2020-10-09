@@ -1,0 +1,90 @@
+﻿@page "/addaccount"
+@inherits AddAccountBase
+@inject IModalService Modal
+@*<h3>Add Account Detail</h3>*@
+
+<EditForm Model="AcMasters" OnValidSubmit="AddNewAccount">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    @*<button type="submit">Add</button>*@
+    <div class="top-row mt-0 fixed-top">
+        <div class="col-sm-9 btn-gradian1 text-white-50"><h2>Add New Account Details</h2></div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-success btn-width">
+                    @*@onclick="@(() => Modal.Show<FetchModalData>("BSS-ERP Alert"))">*@
+                Save
+            </button>
+            <a class="btn btn-success btn-width" href="/findaccount">Find</a>
+            <a class="btn btn-success btn-width" href="/accountmaster">Main</a>
+        </div>
+    </div>
+    <hr class="hr-new1" />
+    <div class="form-group row">
+        <label for="ledgerCode" class="col-sm-2 col-form-label">Ledger Code</label>
+        <div class="col-sm-8">
+            <CustomInputSelect id="ledgerCode" class="form-control"
+                               ValueChanged="@((string value)=>LedgerChange(value))"
+                               ValueExpression="@(()=>LedgerID)"
+                               Value="LedgerID">
+                @*@bind-Value="LedgerID">*@
+                <option value="0">Select Ledger</option>
+                @foreach (var ledger in Ledgers)
+                {
+                    <option value="@ledger.LedgerID,@ledger.LedgerCode">@ledger.LedgerCode @ledger.LedgerName</option>
+                }
+            </CustomInputSelect>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="accountGroupCode" class="col-sm-2 col-form-label">Account Group Code</label>
+        <div class="col-sm-8">
+            <CustomInputSelect id="accountGroupCode" class="form-control"
+                               ValueChanged="@((string value)=>Group_Change(value))"
+                               ValueExpression="@(()=>BSheetGID)"
+                               Value="BSheetGID">
+                <option value="0">Select Account Group</option>
+                @foreach (var accountGroup in AccountGroupMasters)
+                {
+                    <option value="@accountGroup.AccountGroupCode">@accountGroup.AccountGroupCode @accountGroup.AccountGroupName</option>
+                }
+            </CustomInputSelect>
+        </div>
+    </div>
+    @*<div class="form-group row">
+            <label for="accountGroupCode" class="col-sm-2 col-form-label">Account Group Code</label>
+            <div class="col-sm-8">
+                <select id="accountGroupCode" class="form-control" @onchange="OnAccountGroupChange" @bind="AcMasters.BSheetGroupID">
+                    <option>Select Account Group</option>
+                    @foreach (var accountGroup in AccountGroupMasters)
+                    {
+                        <option value="@accountGroup.AccountGroupCode">@accountGroup.AccountGroupCode @accountGroup.AccountGroupName</option>
+                    }
+                </select>
+            </div>
+        </div>*@
+    <div class="form-group row">
+        <label for="AccountCode" class="col-sm-2 col-form-label text-danger">New Account Code</label>
+        <div class="col-sm-8">
+            <InputText type="text" id="AccountCode" @bind-Value="AcMasters.Acno" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="AccountName" class="col-sm-2 col-form-label">Account Name</label>
+        <div class="col-sm-8">
+            <InputText id="AccountName" class="form-control" oninput="this.value=this.value.toUpperCase()"  @bind-Value="AcMasters.Acname" />
+        </div>
+    </div>
+    @if (L_ID == "3" || L_ID == "0" || L_ID == null)
+    {
+        <DisplayAccountGLView AcMaster="AcMasters"></DisplayAccountGLView>
+        @*<DisplayAccountFooter AcMaster="AcMasters"></DisplayAccountFooter>*@
+    }
+    else
+    {
+        <DisplayAccountGLView AcMaster="AcMasters"></DisplayAccountGLView>
+        <DisplayAccount AcMaster="AcMasters"></DisplayAccount>
+        @*<DisplayAccountFooter AcMaster="AcMasters"></DisplayAccountFooter>*@
+    }
+
+
+</EditForm>

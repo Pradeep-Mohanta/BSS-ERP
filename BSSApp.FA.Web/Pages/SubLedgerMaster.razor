@@ -1,0 +1,34 @@
+﻿@page "/subledgermaster"
+@inherits SubLedgerMasterBase
+
+<h3>Sub-Ledger Master</h3>
+<p>This component demonstrates Cascading dropdown</p>
+
+@if (Ledgers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="col-6">
+        <select class="form-control" @onchange="ledgerChange">
+            <option value="">select ledger</option>
+            @foreach(var ledger in Ledgers)
+            {
+                <option value="@ledger.LedgerCode">@ledger.LedgerName</option>
+            }
+        </select>
+    </div>
+    <div class="col-6">
+        <select class="form-control">
+            <option value="">select subledgers</option>
+            @if (SubLedgers != null)
+            {
+                @foreach(var subl in SubLedgers)
+                {
+                    <option value="@subl.SubLedgerID">@subl.SubLedgerName</option>
+                }
+            }
+        </select>
+    </div>
+}

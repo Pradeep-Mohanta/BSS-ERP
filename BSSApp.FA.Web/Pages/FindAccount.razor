@@ -1,0 +1,69 @@
+﻿@page "/findaccount"
+@inherits FindAccountBase
+    <div class="top-row mt-0 fixed-top">
+        <div class="col-md-10 text-white-50 btn-gradian1"><h2>Find Accounts</h2></div>
+        <div class="col-md-2">
+            <a class="btn btn-success" style="width:auto" href="/addaccount">Add New</a>
+            <a class="btn btn-success btn-width" href="/accountmaster">Main</a>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-10 mt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-12">
+                            <EditForm Model="Ledgers">
+                                <div class="form-group">
+                                    <label for="ldgr">Select Ledger</label>
+                                    <CustomInputSelect id="ldgr" class="form-control"
+                                                       ValueChanged="@((string value) => LedgerChange(value))"
+                                                       ValueExpression="@(() => LedgerID)"
+                                                       Value="@LedgerID">
+                                        <option value="0">Select Ledger</option>
+                                        @foreach (var ledger in Ledgers)
+                                        {
+                                            <option value="@ledger.LedgerID,@ledger.LedgerCode">
+                                                @ledger.LedgerCode @ledger.LedgerName
+                                            </option>
+                                        }
+                                    </CustomInputSelect>
+                                </div>
+                            </EditForm>
+                        </div>
+
+                        <div class="col-12">
+                            @if (AcMaster == null)
+                            {
+                                <div class="spinner"></div>
+                            }
+                            else
+                            {
+                                @foreach (var act in AcMaster)
+                                {
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td width="76%">
+                                                    <h6>@act.LedgerCode @act.Acno @act.Acname  </h6>
+                                                </td>
+                                                <td align="right" width="8%">
+                                                    <a href="@($"editaccount/{act.AcMasterID}")" class="btn btn-info btn-width">Edit</a>
+                                                </td>
+                                                <td align="right" width="8%">
+                                                    <a href="" class="btn btn-info btn-width">Approve</a>
+                                                </td>
+                                                <td align="right" width="8%">
+                                                    <a href="" class="btn btn-info btn-width">Delete</a>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>

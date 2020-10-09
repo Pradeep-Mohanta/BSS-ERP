@@ -1,0 +1,109 @@
+﻿@inherits DisplayAccountGLViewBase
+
+@*<h3>Display Account GLView</h3>*@
+<div>
+    <div class="form-group row">
+        <label for="opbal" class="col-sm-2 col-form-label">
+            Opening Balance
+        </label>
+        <div class="col-sm-8">
+            <InputNumber id="opbal" class="form-control" placeholder="Opening Balance"
+                         @bind-Value="AcMaster.Opbal"></InputNumber>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="ason" class="col-sm-2 col-form-label">
+            AsOn Date
+        </label>
+        <div class="col-sm-8">
+            <InputDate id="ason" class="form-control" placeholder="AsOn Date"
+                       @bind-Value="AcMaster.Ason"></InputDate>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="ason" class="col-sm-2 col-form-label">
+            Debit or Credit
+        </label>
+        <div class="col-sm-8">
+            <InputSelect id="DrCr" class="form-control" @bind-Value="AcMaster.DrCr">
+                <option value="D">Debit</option>
+                <option value="C">Credit</option>
+            </InputSelect>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="ActType" class="col-sm-2 col-form-label">
+            Account Type
+        </label>
+        @if (TypeMasts == null)
+        {
+            <div class="spinner"></div>
+        }
+        else
+        {
+            <div class="col-sm-8">
+                <CustomInputSelect id="ActType" class="form-control" placeholder="Account Type"
+                                   @bind-Value="AcMaster.TypeMastID">
+                    <option value="0">Select Account Type</option>
+                    @foreach (var typem in TypeMasts)
+                        {
+                        <option value="@typem.TypeMastID">@typem.Description</option>
+                        }
+                </CustomInputSelect>
+            </div>
+        }
+    </div>
+    <div class="form-group row">
+        <label for="BSheetGroup" class="col-sm-2 col-form-label">
+            Balance Sheet Group
+        </label>
+        @if (BSheetGroups == null)
+        {
+            <div class="spinner"></div>
+        }
+        else
+        {
+            <div class="col-sm-8">
+                <CustomInputSelect id="BSheetGroup" class="form-control" placeholder="Balance Sheet Group"
+                                   @bind-Value="AcMaster.BSheetGroupID">
+                    <option value="0">Select Group</option>
+                    @foreach (var bsgroup in BSheetGroups)
+                        {
+                        <option value="@bsgroup.BSheetGroupID">@bsgroup.G_Name</option>
+                        }
+                </CustomInputSelect>
+            </div>
+        }
+    </div>
+    <div class="form-group row">
+        <label for="costCenterID" class="col-sm-2 col-form-label">
+            Cost Center
+        </label>
+        @if (CostCenters == null)
+        {
+            <div class="spinner"></div>
+        }
+        else
+        {
+            <div class="col-sm-8">
+                <CustomInputSelect id="costCenterID" class="form-control" placeholder="Cost Center"
+                                   @bind-Value="AcMaster.CostCenterID">
+                    <option value="0">Select Cost Center</option>
+                    @foreach (var costcenter in CostCenters)
+                        {
+                        <option value="@costcenter.CostCenterID">@costcenter.CostCenterName</option>
+                        }
+                </CustomInputSelect>
+            </div>
+        }
+    </div>
+    <div class="form-group row">
+        <label for="Description" class="col-sm-2 col-form-label">
+            Remark
+        </label>
+        <div class="col-sm-8">
+            <InputText id="Description" class="form-control" placeholder="Account Description"
+                       @bind-Value="AcMaster.Descr"></InputText>
+        </div>
+    </div>
+</div>

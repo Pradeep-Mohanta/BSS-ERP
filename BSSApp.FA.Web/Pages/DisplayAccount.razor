@@ -1,0 +1,271 @@
+﻿@inherits DisplayAccountBase
+
+    <div>
+        <div class="form-group row">
+            <label for="AcAd1" class="col-sm-2 col-form-label">
+                S/O, D/O, C/O
+            </label>
+            <div class="col-sm-8">
+                <InputText id="AcAd1" class="form-control" placeholder="S/O, D/O, C/O etc."
+                           @bind-Value="AcMaster.Acad1"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="AcAd2" class="col-sm-2 col-form-label">
+                Address 1
+            </label>
+            <div class="col-sm-8">
+                <InputText id="AcAd2" class="form-control" placeholder="Address 1"
+                           @bind-Value="AcMaster.Acad2"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="AcAd3" class="col-sm-2 col-form-label">
+                Address 2
+            </label>
+            <div class="col-sm-8">
+                <InputText id="AcAd3" class="form-control" placeholder="Address 2"
+                           @bind-Value="AcMaster.Acad3"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="AcAd4" class="col-sm-2 col-form-label">
+                Address 3
+            </label>
+            <div class="col-sm-8">
+                <InputText id="AcAd4" class="form-control" placeholder="Address 3"
+                           @bind-Value="AcMaster.Acad4"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="city" class="col-sm-2 col-form-label">
+                City
+            </label>
+            <div class="col-sm-8">
+                <InputText id="city" class="form-control" placeholder="City Name"
+                           @bind-Value="AcMaster.City"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="pin" class="col-sm-2 col-form-label">
+                Pin Code
+            </label>
+            <div class="col-sm-8">
+                <InputText id="pin" class="form-control" placeholder="Pin Code"
+                           @bind-Value="AcMaster.Pin"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="panno" class="col-sm-2 col-form-label">
+                PAN Number
+            </label>
+            <div class="col-sm-8">
+                <InputText id="panno" class="form-control" placeholder="PAN Number"
+                           @bind-Value="AcMaster.Panno"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="tanno" class="col-sm-2 col-form-label">
+                TAN Number
+            </label>
+            <div class="col-sm-8">
+                <InputText id="tanno" class="form-control" placeholder="PAN Number"
+                           @bind-Value="AcMaster.Tanno"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staxno" class="col-sm-2 col-form-label">
+                Service Tax Number
+            </label>
+            <div class="col-sm-8">
+                <InputText id="staxno" class="form-control" placeholder="Service Tax Number"
+                           @bind-Value="AcMaster.STaxno"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="tinVatno" class="col-sm-2 col-form-label">
+                TIN/VAT Number
+            </label>
+            <div class="col-sm-8">
+                <InputText id="tinVatno" class="form-control" placeholder="TIN/VAT Number"
+                           @bind-Value="AcMaster.Tin_VatNo"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="phoneNo" class="col-sm-2 col-form-label">
+                Phone Number
+            </label>
+            <div class="col-sm-8">
+                <InputText id="phoneNo" class="form-control" placeholder="Phone Number"
+                           @bind-Value="AcMaster.Phone"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="mobileNo1" class="col-sm-2 col-form-label">
+                Mobile Number 1
+            </label>
+            <div class="col-sm-8">
+                <InputText id="mobileNo1" class="form-control" placeholder="Mobile Number 1"
+                           @bind-Value="AcMaster.Mobile1"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="mobileNo2" class="col-sm-2 col-form-label">
+                Mobile Number 2
+            </label>
+            <div class="col-sm-8">
+                <InputText id="mobileNo2" class="form-control" placeholder="Mobile Number 2"
+                           @bind-Value="AcMaster.Mobile2"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="faxNo" class="col-sm-2 col-form-label">
+                Fax Number
+            </label>
+            <div class="col-sm-8">
+                <InputText id="faxNo" class="form-control" placeholder="Fax Number"
+                           @bind-Value="AcMaster.FaxNo"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="eMail" class="col-sm-2 col-form-label">
+                E-Mail
+            </label>
+            <div class="col-sm-8">
+                <InputText id="eMail" class="form-control" placeholder="E-Mail"
+                           @bind-Value="AcMaster.EMail"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="ContactPerson" class="col-sm-2 col-form-label">
+                Contact Person
+            </label>
+            <div class="col-sm-8">
+                <InputText id="ContactPerson" class="form-control" placeholder="Contact Person"
+                           @bind-Value="AcMaster.ContactPerson"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="groupSeries" class="col-sm-2 col-form-label">
+                Control Group Series
+            </label>
+            <div class="col-sm-8">
+                <InputText id="groupSeries" class="form-control" placeholder="Control Group Series"
+                           @bind-Value="AcMaster.GroupSeries"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="limitAmount" class="col-sm-2 col-form-label">
+                Account Limit Amount
+            </label>
+            <div class="col-sm-8">
+                <InputNumber id="limitAmount" class="form-control" placeholder="Account Limit Amount"
+                             @bind-Value="AcMaster.LimitAmount"></InputNumber>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="creditAmount" class="col-sm-2 col-form-label">
+                Credit Limit Amount
+            </label>
+            <div class="col-sm-8">
+                <InputNumber id="creditAmount" class="form-control" placeholder="Account Credit Limit Amount"
+                             @bind-Value="AcMaster.CreditAmount"></InputNumber>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="dob" class="col-sm-2 col-form-label">
+                Date of Creat/Dob
+            </label>
+            <div class="col-sm-8">
+                <InputDate id="dob" class="form-control" placeholder="Date of Creation or Date of Birth"
+                           @bind-Value="Dob"></InputDate>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="countryID" class="col-sm-2 col-form-label">
+                Country
+            </label>
+            @if (Countries == null)
+            {
+                <div class="spinner"></div>
+            }
+            else
+            {
+                <div class="col-sm-8">
+                    <InputSelect id="countryID" class="form-control" placeholder="Country"
+                                 ValueChanged="@((string value)=> CountryHasChanged(value))"
+                                 ValueExpression="@(()=>CountryID)"
+                                 Value="CountryID">
+                        @*@bind-Value="AcMaster.CountryID">*@
+                        <option value="0">Select Country</option>
+                        @foreach (var country in Countries)
+                        {
+                            <option value="@country.CountryID">@country.CountryName</option>
+                        }
+                    </InputSelect>
+                </div>
+            }
+        </div>
+
+        <div class="form-group row">
+            <label for="stateID" class="col-sm-2 col-form-label">
+                State
+            </label>
+            @if (States == null)
+            {
+                <div class="spinner"></div>
+            }
+            else
+            {
+                <div class="col-sm-8">
+                    <CustomInputSelect id="stateID" class="form-control" placeholder="State"
+                                       @bind-Value="StateID">
+                        <option value="0">Select State</option>
+                        @foreach (var state in States)
+                            {
+                            <option value="@state.StateID"> @state.StateName </option>
+                            }
+                    </CustomInputSelect>
+                </div>
+            }
+        </div>
+
+        
+
+        <div class="form-group row">
+            <label for="corporateName" class="col-sm-2 col-form-label">
+                Corporate Name
+            </label>
+            <div class="col-sm-8">
+                <InputText id="corporateName" class="form-control" placeholder="Corporate Name"
+                           @bind-Value="AcMaster.CorporateName"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="GSTCode" class="col-sm-2 col-form-label">
+                GST Code
+            </label>
+            <div class="col-sm-8">
+                <InputText id="GSTCode" class="form-control" placeholder="GST Code"
+                           @bind-Value="AcMaster.GSTCode"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="serviceCode" class="col-sm-2 col-form-label">
+                Service Code
+            </label>
+            <div class="col-sm-8">
+                <InputText id="ServiceCode" class="form-control" placeholder="Service Code"
+                           @bind-Value="AcMaster.ServiceCode"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="aadharNo" class="col-sm-2 col-form-label">
+                Aadhar Number
+            </label>
+            <div class="col-sm-8">
+                <InputText id="aadharNo" class="form-control" placeholder="Aadhar Number"
+                           @bind-Value="AcMaster.AdharNo"></InputText>
+            </div>
+        </div>
+    </div>
