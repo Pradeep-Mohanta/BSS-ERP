@@ -42,6 +42,7 @@ namespace BSSApp.FA.Web.Pages
         public string Id { get; set; }
         public string CountryID;
         public string LedgerCode;
+        public Boolean Disable_Act_Footer { get; set; } = true;
         public string Message { get; set; } = "Data Update Successfully";
         protected async override Task OnInitializedAsync()
         {

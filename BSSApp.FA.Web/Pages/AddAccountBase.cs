@@ -30,6 +30,7 @@ namespace BSSApp.FA.Web.Pages
         public IAccountGroupMasterService AccountGroupMasterService { get; set; }
         public IEnumerable<AccountGroupMaster> AccountGroupMasters { get; set; } = new List<AccountGroupMaster>();
 
+        //public Boolean Disable_Act_Footer { get; set; } = true;
         public string maxaccountno { get; set; }
         public string CreatedUser { get; set; } = "Admin";
 

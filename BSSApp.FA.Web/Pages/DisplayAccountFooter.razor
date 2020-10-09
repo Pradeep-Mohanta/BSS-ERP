@@ -1,53 +1,51 @@
 ﻿@inherits DisplayAccountFooterBase
-
 @*<h3>DisplayAccountFooter</h3>*@
-<div class="container-fluid" style="border:1px solid #ff6a00;">
-     <div class="form-group row mt-2">
-        <label for="createdBy" class="col-sm-2 col-form-label">
-            Created By
-        </label>
-        <div class="col-sm-8">
-            <InputText id="createdBy" class="form-control" placeholder="Created By" disabled
-                       @bind-Value="AcMaster.CreatedBy"></InputText>
+@*@if (Disable_Flag)
+{*@
+    <div class="container-fluid" style="border:1px solid #ff6a00;">
+        <div class="form-group row mt-2">
+            <label for="createdBy" class="col-sm-2 col-form-label">
+                Created By
+            </label>
+            <div class="col-sm-8">
+                <InputText id="createdBy" class="form-control" placeholder="Created By" disabled="true"
+                           @bind-Value="AcMaster.CreatedBy"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="createdDate" class="col-sm-2 col-form-label">
+                Created Date
+            </label>
+            <div class="col-sm-8">
+                <InputDate id="createdDate" class="form-control" placeholder="Created Date" disabled="true"
+                           @bind-Value="CreatedDate"></InputDate>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="authorisedBy" class="col-sm-2 col-form-label">
+                Authorized By
+            </label>
+            <div class="col-sm-8">
+                <InputText id="authorisedBy" class="form-control" placeholder="Authorized By" disabled="@Disable_Flag"
+                           @bind-Value="AcMaster.AuthorisedBy"></InputText>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="authorisedAccount" class="col-sm-2 col-form-label">
+                Authorized Account
+            </label>
+            <div class="col-sm-8 text-sm-left">
+                <InputCheckbox id="authorisedAccount" @bind-Value="AcMaster.AuthorisedAc" disabled="@Disable_Flag"></InputCheckbox>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="authorisedDate" class="col-sm-2 col-form-label">
+                Authorized Date
+            </label>
+            <div class="col-sm-8 ">
+                <InputDate id="authorisedDate" class="form-control" placeholder="Authorized Date" disabled="@Disable_Flag"
+                           @bind-Value="AuthorisedDate"></InputDate>
+            </div>
         </div>
     </div>
-    <div class="form-group row">
-        <label for="createdDate" class="col-sm-2 col-form-label">
-            Created Date
-        </label>
-        <div class="col-sm-8">
-            <InputDate id="createdDate" class="form-control" placeholder="Created Date" disabled
-                       @bind-Value="CreatedDate"></InputDate>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="authorisedBy" class="col-sm-2 col-form-label">
-            Authorized By
-        </label>
-        <div class="col-sm-8">
-            <InputText id="authorisedBy" class="form-control" placeholder="Authorized By" disabled
-                       @bind-Value="AcMaster.AuthorisedBy"></InputText>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="authorisedAccount" class="col-sm-2 col-form-label">
-            Authorized Account
-        </label>
-        <div class="col-sm-8 text-sm-left">
-            @*<InputSelect id="authorisedAccount" class="form-control" @bind-Value="AcMaster.AuthorisedAc" placeholder="Authorized Account">
-                <option value="False">False</option>
-                <option value="True">True</option>
-            </InputSelect>*@
-            <InputCheckbox id="authorisedAccount"  @bind-Value="AcMaster.AuthorisedAc" disabled></InputCheckbox>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="authorisedDate" class="col-sm-2 col-form-label">
-            Authorized Date
-        </label>
-        <div class="col-sm-8 ">
-            <InputDate id="authorisedDate" class="form-control" placeholder="Authorized Date" disabled
-                       @bind-Value="AuthorisedDate"></InputDate>
-        </div>
-    </div>
-</div>
+

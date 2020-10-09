@@ -12,6 +12,9 @@ namespace BSSApp.FA.Web.Pages
         [Parameter]
         public AcMaster AcMaster { get; set; } = new AcMaster();
 
+        [Parameter]
+        public Boolean Disable_Flag { get; set; }
+
         public DateTime CreatedDate;
         public DateTime AuthorisedDate;
 
