@@ -1,11 +1,29 @@
 ﻿using BSSApp.FA.Api.Models;
 using BSSApp.FA.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.JsonPatch.Adapters;
+
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using System.Linq;
+
 
 namespace BSSApp.FA.Api.Controllers
 {
@@ -15,9 +33,12 @@ namespace BSSApp.FA.Api.Controllers
     {
         private readonly IAcMasterRepository acMasterRepository;
 
-        public AcMastersController(IAcMasterRepository acMasterRepository)
+        public AppDbContext AppDb { get; }
+
+        public AcMastersController(IAcMasterRepository acMasterRepository,AppDbContext appDb)
         {
             this.acMasterRepository = acMasterRepository;
+            AppDb = appDb;
         }
         [HttpGet("{accountsearch}")]
         public async Task<ActionResult<IEnumerable<AcMaster>>> AccountSearch(string ledgerCode)
@@ -64,6 +85,36 @@ namespace BSSApp.FA.Api.Controllers
             return await acMasterRepository.GetMaxAcNo_sp(gcode);
         }
 
+        [HttpGet("updateAuth")]
+        public async Task<AcMaster[]> Update_AcMaster_Auth(int id,string AuthBy,Boolean AuthAc,DateTime AuthDate)
+        {
+            return await acMasterRepository.UpdateAcMasterAuthorization_sp(id, AuthBy, AuthAc, AuthDate);
+           
+        }
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult> Patch(int id,[FromBody] JsonPatchDocument<AcMaster> patchDocument)
+        {
+            if (patchDocument == null)
+            {
+                return BadRequest();
+            }
+            var AcMasterFromDB = acMasterRepository.GetAcMaster(id);
+            if (AcMasterFromDB == null)
+            {
+                return NotFound();
+            }
+            await patchDocument.ApplyTo(AcMasterFromDB, ModelState);
+
+            var isValid = TryValidateModel(AcMasterFromDB);
+
+            if (!isValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await AppDb.SaveChangesAsync();
+
+            return NoContent();
+        }
         [HttpGet("{id:int}")]
         public async Task<ActionResult<AcMaster>> GetAcMaster(int id)
         {

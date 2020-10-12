@@ -50,5 +50,10 @@ namespace BSSApp.FA.Web.Services
         {
             return await httpClient.PutJsonAsync<AcMaster>("api/AcMasters",updatedAcmaster);
         }
+
+        public async Task<AcMaster[]> UpdateAcMasterAuthorization_sp(int Id, string AuthoBy, bool AuthoAc, DateTime AuthoDate)
+        {
+            return await httpClient.GetJsonAsync<AcMaster[]>($"api/AcMasters/updateAuth?id={Id}&AuthBy={AuthoBy}&AuthAc={AuthoAc}&AuthDate={AuthoDate}");
+        }
     }
 }

@@ -15,5 +15,6 @@ namespace BSSApp.FA.Web.Services
         Task<AcMaster[]> GetMaxAcNo_sp(string gcode);
         Task<AcMaster> UpdateAcMaster(AcMaster updatedAcmaster);
         Task<AcMaster> AddAcMaster(AcMaster NewAccountMaster);
+        Task<AcMaster[]> UpdateAcMasterAuthorization_sp(int AcMasterId, string AuthoBy, Boolean AuthoAc, DateTime AuthoDate);
     }
 }

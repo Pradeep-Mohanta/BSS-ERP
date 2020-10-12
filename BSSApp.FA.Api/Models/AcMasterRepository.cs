@@ -1,4 +1,7 @@
 ﻿using BSSApp.FA.Models;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -162,5 +165,38 @@ namespace BSSApp.FA.Api.Models
             return acs;
         }
 
+        public async Task<AcMaster[]> UpdateAcMasterAuthorization_sp(int AcMasterId,string AuthoBy, Boolean AuthoAc,DateTime AuthoDate)
+        {
+            AcMaster[] UpdatedAcMaster;
+            UpdatedAcMaster = await appDbContext.AcMasters.FromSqlRaw("execute Update_AcMaster_Authorization @p0,@p1,@p2,@p3", AcMasterId, AuthoBy, AuthoAc, AuthoDate).ToArrayAsync();
+            return UpdatedAcMaster;
+        }
+
+       
+
+
+
+        //public async Task<AcMaster> UpdatePatchAcMaster(int AcMasterId, [FromBody] JsonPatchDocument<AcMaster> patchDocument)
+        //{
+        //    if (patchDocument == null)
+        //    {
+        //        return null;
+        //    }
+        //    var valAcMaster = await appDbContext.AcMasters.FirstOrDefaultAsync(x => x.AcMasterID == AcMasterId);
+        //    if (valAcMaster == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    patchDocument.ApplyTo(valAcMaster,ModelState);
+        //    await appDbContext.SaveChangesAsync();
+        //    return null;
+        //    //throw new NotImplementedException();
+        //}
+
+        //private void ModelState(JsonPatchError obj)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
