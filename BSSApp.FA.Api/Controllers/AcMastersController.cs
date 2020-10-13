@@ -14,15 +14,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.JsonPatch.Adapters;
 
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using System.Linq;
+
 
 
 namespace BSSApp.FA.Api.Controllers
@@ -91,19 +83,21 @@ namespace BSSApp.FA.Api.Controllers
             return await acMasterRepository.UpdateAcMasterAuthorization_sp(id, AuthBy, AuthAc, AuthDate);
            
         }
-        [HttpPatch("{id:int}")]
-        public async Task<ActionResult> Patch(int id,[FromBody] JsonPatchDocument<AcMaster> patchDocument)
+        [HttpPatch("updatePatch/{id:int}")]
+        public async Task<ActionResult> Patch_AcMaster(int id,[FromBody] JsonPatchDocument<AcMaster> patchDocument)
         {
             if (patchDocument == null)
+
             {
                 return BadRequest();
             }
-            var AcMasterFromDB = acMasterRepository.GetAcMaster(id);
+            var AcMasterFromDB = await acMasterRepository.GetAcMaster(id);
             if (AcMasterFromDB == null)
             {
                 return NotFound();
             }
-            await patchDocument.ApplyTo(AcMasterFromDB, ModelState);
+            
+            patchDocument.ApplyTo(AcMasterFromDB);
 
             var isValid = TryValidateModel(AcMasterFromDB);
 
@@ -114,7 +108,12 @@ namespace BSSApp.FA.Api.Controllers
             await AppDb.SaveChangesAsync();
 
             return NoContent();
+
+            //[{ "op":"replace", "path":"/authorisedBy", "value": "Admin"},
+            //{ "op":"replace","path":"/authorisedAc","value": true},
+            //{ "op":"replace","path":"/authorisedDate","value": "2020-10-12"}]
         }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<AcMaster>> GetAcMaster(int id)
         {

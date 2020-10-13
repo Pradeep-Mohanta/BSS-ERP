@@ -15,13 +15,13 @@ namespace BSSApp.FA.Web.Pages
         [Parameter]
         public Boolean Disable_Flag { get; set; }
 
-        public DateTime CreatedDate;
-        public DateTime AuthorisedDate;
+        //public DateTime CreatedDate;
+        //public DateTime AuthorisedDate;
 
         protected async override Task OnInitializedAsync()
         {
-            CreatedDate =(AcMaster.CreatedDate.ToString() == "1/1/0001 12:00:00 AM" ? DateTime.Today : AcMaster.CreatedDate);
-            AuthorisedDate = (AcMaster.AuthorisedDate.ToString() == "1/1/0001 12:00:00 AM" ? DateTime.Today : AcMaster.AuthorisedDate);
+            //CreatedDate =(AcMaster.CreatedDate.ToString() == "1/1/0001 12:00:00 AM" ? DateTime.Today : AcMaster.CreatedDate);
+            //AuthorisedDate = (AcMaster.AuthorisedDate.ToString() == "1/1/0001 12:00:00 AM" ? DateTime.Today : AcMaster.AuthorisedDate);
             await Task.Delay(10);
         }
     }

@@ -172,7 +172,7 @@ namespace BSSApp.FA.Web.Pages
                     Compcode = "001",
                     Dob = DateTime.Now,
                     CreatedDate = DateTime.Now,
-                    CreatedBy = "Pradeep New"
+                    CreatedBy = CreatedUser
                 };
                 StateHasChanged();
             }
@@ -200,7 +200,7 @@ namespace BSSApp.FA.Web.Pages
                 Compcode = "001",
                 Dob = DateTime.Now,
                 CreatedDate = DateTime.Now,
-                CreatedBy = "Pradeep New"
+                CreatedBy = CreatedUser
             };
         }
     }

@@ -9,7 +9,7 @@
 }
 else
 {
-<EditForm Model="@AcMaster">
+<EditForm Model="@AcMaster" OnValidSubmit="Update_Patch" >
     <div class="top-row mt-0 fixed-top">
         <div class="col-md-9 text-white-50 btn-gradian1"><h2>Approve Account</h2></div>
         <div class="col-md-3">
@@ -25,12 +25,24 @@ else
         <label for="LedgerCode" class="col-sm-2 col-form-label">
             Ledger Code
         </label>
-        <div class="col-sm-8">
-            <InputSelect id="ledgerCode" class="form-control" placeholder="Ledger Code" readonly="true"
-                         @bind-Value="AcMaster.AcMasterID">
-                <option value="@AcMaster.AcMasterID"> @AcMaster.LedgerCode</option>
-            </InputSelect>
-        </div>
+        @if (Ledgers == null)
+        {
+            <div class="spinner"></div>
+        }
+        else
+        {
+            <div class="col-sm-8">
+                <CustomInputSelect id="ledgerCode" class="form-control" placeholder="Ledger Code" readonly="true"
+                                   @bind-Value="@AcMaster.LedgerID">
+                    @foreach (var ldgr in Ledgers)
+                            {
+                                <option value="@ldgr.LedgerID"> @ldgr.LedgerCode @ldgr.LedgerName </option>
+                            }
+
+                </CustomInputSelect>
+            </div>
+        }
+
     </div>
     <div class="form-group row">
         <label for="AccountCode" class="col-sm-2 col-form-label">

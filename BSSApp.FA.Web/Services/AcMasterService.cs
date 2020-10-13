@@ -55,5 +55,10 @@ namespace BSSApp.FA.Web.Services
         {
             return await httpClient.GetJsonAsync<AcMaster[]>($"api/AcMasters/updateAuth?id={Id}&AuthBy={AuthoBy}&AuthAc={AuthoAc}&AuthDate={AuthoDate}");
         }
+
+        public async void UpdatePatchAcMaster(int id, StringContent patchDoc)
+        {
+            await httpClient.PatchAsync("api/AcMasters/updatePatch/"+id,patchDoc);
+        }
     }
 }
