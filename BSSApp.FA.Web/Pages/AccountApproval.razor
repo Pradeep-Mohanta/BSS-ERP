@@ -9,57 +9,65 @@
 }
 else
 {
-<EditForm Model="@AcMaster" OnValidSubmit="Update_Patch" >
-    <div class="top-row mt-0 fixed-top">
-        <div class="col-md-9 text-white-50 btn-gradian1"><h2>Approve Account</h2></div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-success btn-width">
-                Save
-            </button>
-            <a class="btn btn-success btn-width" href="/findaccount">Find</a>
-            <a class="btn btn-success btn-width" href="/accountmaster">Main</a>
-        </div>
-    </div>
-    <hr class="hr-new1" />
-    <div class="form-group row">
-        <label for="LedgerCode" class="col-sm-2 col-form-label">
-            Ledger Code
-        </label>
-        @if (Ledgers == null)
-        {
-            <div class="spinner"></div>
-        }
-        else
-        {
-            <div class="col-sm-8">
-                <CustomInputSelect id="ledgerCode" class="form-control" placeholder="Ledger Code" readonly="true"
-                                   @bind-Value="@AcMaster.LedgerID">
-                    @foreach (var ldgr in Ledgers)
-                            {
-                                <option value="@ldgr.LedgerID"> @ldgr.LedgerCode @ldgr.LedgerName </option>
-                            }
-
-                </CustomInputSelect>
+    <EditForm Model="@AcMaster" OnValidSubmit="Update_Patch">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="top-row mt-0 fixed-top">
+            <div class="col-md-9 text-white-50 btn-gradian1"><h2>Approve Account</h2></div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success btn-width">
+                    Save
+                </button>
+                <a class="btn btn-success btn-width" href="/findaccount">Find</a>
+                <a class="btn btn-success btn-width" href="/accountmaster">Main</a>
             </div>
-        }
+        </div>
+        <hr class="hr-new1" />
+        <div class="form-group row">
+            <label for="LedgerCode" class="col-sm-2 col-form-label">
+                Ledger Code
+            </label>
+            @if (Ledgers == null)
+            {
+                <div class="spinner"></div>
+            }
+            else
+            {
+                <div class="col-sm-8">
+                    <CustomInputSelect id="ledgerCode" class="form-control" placeholder="Ledger Code" readonly="true"
+                                       @bind-Value="@AcMaster.LedgerID">
+                        @foreach (var ldgr in Ledgers)
+                                {
+                            <option value="@ldgr.LedgerID"> @ldgr.LedgerCode @ldgr.LedgerName </option>
+                                }
 
-    </div>
-    <div class="form-group row">
-        <label for="AccountCode" class="col-sm-2 col-form-label">
-            Account Code
-        </label>
-        <div class="col-sm-8">
-            <InputText id="AccountCode" class="form-control" readonly="true" @bind-Value="AcMaster.Acno"></InputText>
+                    </CustomInputSelect>
+                </div>
+            }
+
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="AccountName" class="col-sm-2 col-form-label">
-            Account Name
-        </label>
-        <div class="col-sm-8">
-            <InputText id="AccountName" class="form-control" readonly="true" @bind-Value="AcMaster.Acname"></InputText>
+        <div class="form-group row">
+            <label for="AccountCode" class="col-sm-2 col-form-label">
+                Account Code
+            </label>
+            <div class="col-sm-8">
+                <InputText id="AccountCode" class="form-control" readonly="true" @bind-Value="AcMaster.Acno"></InputText>
+            </div>
         </div>
-    </div>
-    <DisplayAccountFooter AcMaster="AcMaster" Disable_Flag="Disable_Act_Footer"></DisplayAccountFooter>
-</EditForm>
+        <div class="form-group row">
+            <label for="AccountName" class="col-sm-2 col-form-label">
+                Account Name
+            </label>
+            <div class="col-sm-8">
+                <InputText id="AccountName" class="form-control" readonly="true" @bind-Value="AcMaster.Acname"></InputText>
+            </div>
+        </div>
+        <DisplayAccountFooter AcMaster="AcMaster" Disable_Flag="Disable_Act_Footer"></DisplayAccountFooter>
+    </EditForm>
+    <BssMessagePopup ConfirmationChanged="confirmAction_Click" @ref="MessageConfirmation" 
+                     confirmationTitle="Update Authorization"
+                     confirmationMessage=@($"Want to update authorization detail of account \"{AcMaster.Acname}\"")
+                     cancelButtonText="Cancel" OKButtonText="Update">
+
+    </BssMessagePopup>
 }

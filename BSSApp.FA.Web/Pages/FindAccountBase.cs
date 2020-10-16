@@ -18,8 +18,24 @@ namespace BSSApp.FA.Web.Pages
         [Inject]
         public IAcMasterService AcMasterService { get; set; }
         public IEnumerable<AcMaster> AcMaster { get; set; } = new List<AcMaster>();
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         public string LedgerID { get; set; }
         public string Lcd { get; set; }
+        public ElementReference btn { get; set; }
+        //public int ActId { get; set; }
+        
+        //public bool actionVal;
+        protected BioScan.Components.BssMessagePopupBase MessageConfirmation { get; set; }
+        protected void confirmAction_Click(bool actionConfirm)
+        {
+            if (actionConfirm)
+            {
+                string lgrVal = "3,GL";
+                LedgerChange(lgrVal);
+            }
+        }
         protected async override Task OnInitializedAsync()
         {
             Ledgers = (await LedgerService.GetLedgers()).ToList();
@@ -35,6 +51,12 @@ namespace BSSApp.FA.Web.Pages
         {
             AcMaster = (await AcMasterService.LedgerOfAccounts(Lcd)).ToList();
             StateHasChanged();
+        }
+        
+        protected async void Delete_Click(int id)
+        {
+            await AcMasterService.DeleteAcMaster(id);
+            MessageConfirmation.show();
         }
     }
 }

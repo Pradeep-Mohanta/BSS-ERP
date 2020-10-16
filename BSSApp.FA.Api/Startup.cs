@@ -31,7 +31,7 @@ namespace BSSApp.FA.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
             services.AddScoped<IAcMasterRepository, AcMasterRepository>();
             services.AddScoped<ILedgerRepository, LedgerRepository>();
             services.AddScoped<ISubLedgerRepository, SubLedgerRepository>();
@@ -41,6 +41,8 @@ namespace BSSApp.FA.Api
             services.AddScoped<ITypeMastRepository, TypeMastRepository>();
             services.AddScoped<IBSheetGroupRepository, BSheetGroupRepository>();
             services.AddScoped<ICostCenterRepository, CostCenterRepository>();
+            services.AddScoped<IUserObjectAssignMasterRepository, UserObjectAssignMasterRepository>();
+            services.AddScoped<IModuleObjectMasterRepository, ModuleObjectMasterRepository>();
 
             services.AddRazorPages();
             services.AddControllers();

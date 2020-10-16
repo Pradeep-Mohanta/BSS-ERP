@@ -14,10 +14,11 @@ else
         <div class="top-row mt-0 fixed-top">
             <div class="col-md-9 text-white-50 btn-gradian1"><h2>Update Account Details</h2></div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-success btn-width"
-                        @onclick="@(() => Modal.Show<FetchModalData>("BSS-ERP Alert"))">
+                <button type="submit" class="btn btn-success btn-width">
+                    @*@onclick="@(() => Modal.Show<FetchModalData>("BSS-ERP Alert"))">*@
                     Save
                 </button>
+
                 <a class="btn btn-success btn-width" href="/findaccount">Find</a>
                 <a class="btn btn-success btn-width" href="/accountmaster">Main</a>
             </div>
@@ -48,7 +49,7 @@ else
                 Account Name
             </label>
             <div class="col-sm-8">
-                <InputText id="AcName" class="form-control" placeholder="Account Name"
+                <InputText id="AcName" class="form-control" oninput="this.value=this.value.toUpperCase()" placeholder="Account Name"
                            @bind-Value="AcMaster.Acname"></InputText>
             </div>
         </div>
@@ -69,5 +70,12 @@ else
         </div>
     </div>
     </EditForm>
-   
+    <BssMessagePopup ConfirmationChanged="confirmAction_Click" @ref="MessageConfirmation"
+                     confirmationTitle="Update Message"
+                     confirmationMessage=@($"Are you Update the account detail to : \"{AcMaster.Acname}\" ?")
+                     cancelButtonText="Cancel"
+                     OKButtonText="Update"
+                     DisplayCancelButton=true
+                     DisplayOKlButton=true>
+    </BssMessagePopup>
 }

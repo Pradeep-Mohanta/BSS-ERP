@@ -33,6 +33,7 @@ namespace BSSApp.FA.Web.Pages
         //public Boolean Disable_Act_Footer { get; set; } = true;
         public string maxaccountno { get; set; }
         public string CreatedUser { get; set; } = "Admin";
+        protected BioScan.Components.BssMessagePopup MessageConfirmation;
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
@@ -52,14 +53,23 @@ namespace BSSApp.FA.Web.Pages
                 AuthorisedBy = "pdp"
             };
         }
-        protected async Task AddNewAccount()
+        protected async void confirmAction_Click(bool actionConfirm)
         {
-            var result = await AcMasterService.AddAcMaster(AcMasters);
-            if (result != null)
+            if (actionConfirm)
             {
-                NavigationManager.NavigateTo("/findaccount");
+                //string lgrVal = "3,GL";
+                //LedgerChange(lgrVal);
+                var result = await AcMasterService.AddAcMaster(AcMasters);
+                if (result != null)
+                {
+                    NavigationManager.NavigateTo("/findaccount");
+                }
             }
-
+        }
+        protected void AddNewAccount()
+        {
+            MessageConfirmation.show();
+            
         }
         protected async void OnAccountGroupChange(ChangeEventArgs AccountGroupChange)
         {

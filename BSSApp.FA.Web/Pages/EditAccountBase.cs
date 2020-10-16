@@ -44,6 +44,15 @@ namespace BSSApp.FA.Web.Pages
         public string LedgerCode;
         public Boolean Disable_Act_Footer { get; set; } = true;
         public string Message { get; set; } = "Data Update Successfully";
+        protected BioScan.Components.BssMessagePopupBase MessageConfirmation { get; set; }
+        protected async void confirmAction_Click(bool actionConfirm)
+        {
+            if (actionConfirm)
+            {
+                await AcMasterService.UpdateAcMaster(AcMaster);
+                NavigationManager.NavigateTo("/findaccount");
+            }
+        }
         protected async override Task OnInitializedAsync()
         {
             //PopupMessage = "Data Update Successfully";
@@ -67,9 +76,10 @@ namespace BSSApp.FA.Web.Pages
             States = (await StateService.GetStatesForCountry(int.Parse(value))).ToList();
             StateHasChanged();
         } 
-        protected async Task HandleValidSubmit()
+        protected void HandleValidSubmit()
         {
-            await AcMasterService.UpdateAcMaster(AcMaster);
+            MessageConfirmation.show();
+            //await AcMasterService.UpdateAcMaster(AcMaster);
             //var result=await AcMasterService.UpdateAcMaster(AcMaster);
             //if (result != null)
             //{

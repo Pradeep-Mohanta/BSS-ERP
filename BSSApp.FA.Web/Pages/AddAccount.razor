@@ -85,6 +85,12 @@
         <DisplayAccount AcMaster="AcMasters"></DisplayAccount>
         @*<DisplayAccountFooter AcMaster="AcMasters"></DisplayAccountFooter>*@
     }
-
-
 </EditForm>
+<BssMessagePopup ConfirmationChanged="confirmAction_Click" @ref="MessageConfirmation"
+                 confirmationTitle="Account Add Message"
+                 confirmationMessage=@($"Are you want to add account detail.")
+                 cancelButtonText="Cancel" 
+                 OKButtonText="Add New" 
+                 DisplayCancelButton=true 
+                 DisplayOKlButton=true>
+</BssMessagePopup>
