@@ -18,9 +18,6 @@ namespace BSSApp.FA.Api.Models
         {
             this.appDbContext = appDbContext;
         }
-        //public async Task<AcMaster> AddAcMaster(AcMaster acMaster)
-        //{
-        //}
 
         async Task<AcMaster> IAcMasterRepository.AddAcMaster(AcMaster acMaster)
         {

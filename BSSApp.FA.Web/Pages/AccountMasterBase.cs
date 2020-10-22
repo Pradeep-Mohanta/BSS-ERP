@@ -40,7 +40,7 @@ namespace BSSApp.FA.Web.Pages
         }
         protected async void OnAccountGroupChange(ChangeEventArgs AccountGroupChange)
         {
-            int val = 0;
+            int val;
             //******************Data Fetching through lambda-expression
             //AcMastersNew = (IEnumerable<AcMaster>) await AcMasterService.GetMaxAccountNo(AccountGroupChange.Value.ToString());
 

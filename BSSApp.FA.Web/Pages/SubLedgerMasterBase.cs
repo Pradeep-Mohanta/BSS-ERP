@@ -32,7 +32,7 @@ namespace BSSApp.FA.Web.Pages
         }
         protected async void OnLedgerChange(string val)
         {
-            string myval = val;
+            //string myval = val;
             //httpClient.GetJsonAsync<SubLedger[]>($"api/subledgers/{LedgerID}");
             //var result= httpClient.GetJsonAsync<SubLedger[]>($"api/subledgers/{LedgerID}");
             SubLedgers = (await SubLedgerService.GetSubLedgers($"{val}")).ToList();

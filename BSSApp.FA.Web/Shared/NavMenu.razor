@@ -1,4 +1,6 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using BSSApp.FA.Models;
+@using BSSApp.FA.Web.Services;
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">BSSApp.FA.Web</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -6,44 +8,87 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    @if (UserAssignModule == null)
+    {
+        <div class="spinner"></div>
+    }
+    else
+    {
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link">
-                <span class="oi oi-briefcase" aria-hidden="true"></span> Finance
-            </NavLink>
-            <ul>
-                <li>
-                    <NavLink class="nav-link"  href="AccountMaster">
-                        <span class="oi oi-briefcase" aria-hidden="true"></span> Account Master
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink class="nav-link" href="SubLedgerMaster">
-                        <span class="oi oi-briefcase" aria-hidden="true"></span> Sub-Ledger
-                    </NavLink>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="main">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
+        @foreach (var md in UserAssignModule)
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href=@($"main{md.ModuleMaster.ModuleCode}") Match="NavLinkMatch.All">
+                    <span class="oi oi-arrow-circle-right" aria-hidden="true"></span>@md.ModuleMaster.ModuleName
+                </NavLink>
+            </li>
+        }
     </ul>
-</div>
+            @*<ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="mainfa" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Home
+                        </NavLink>
+                    </li>
 
-@code {
+
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="mainfa">
+                            <span class="oi oi-briefcase" aria-hidden="true"></span> Finance
+                        </NavLink>
+                        <ul>
+                            <li>
+                                <NavLink class="nav-link" href="AccountMaster">
+                                    <span class="oi oi-briefcase" aria-hidden="true"></span> Account Master
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="nav-link" href="SubLedgerMaster">
+                                    <span class="oi oi-briefcase" aria-hidden="true"></span> Sub-Ledger
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="mainpy">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Payroll
+                        </NavLink>
+                    </li>
+                </ul>*@
+            }
+    </div>
+
+@code 
+{
+
+    [Inject]
+    public IUserAssignModuleService UserAssignModuleService { get; set; }
+
+    public IEnumerable<UserAssignModule> UserAssignModule { get; set; }
+    public string loginUserName { get; set; } = "pradeep";
+
+    //protected async void main()
+    //{
+    //    UserAssignModule =(IEnumerable<UserAssignModule>) await UserAssignModuleService.GetUserAssignModule(1);
+    //}
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserAssignModule = await UserAssignModuleService.GetUserAssignModules_userName(loginUserName);
     }
 }
