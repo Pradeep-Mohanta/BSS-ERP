@@ -1,6 +1,14 @@
 ﻿@page "/"
+
+@inherits HomeBase
+@attribute [Authorize]
 <h3>Home Page</h3>
-
-@code {
-
-}
+@*<div class="form-group row ">
+    <input id="txtUrl" @bind="txtVal" style="width:400px"/>
+</div>
+<div class="form-group row">
+    <button @onclick="Button_Click" value="Submit">Submit</button>
+</div>
+<div class="form-group row">
+    <input id="txtVal" @bind="findVal" style="width:400px" />
+</div>*@

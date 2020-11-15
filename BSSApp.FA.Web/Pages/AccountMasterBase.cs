@@ -1,6 +1,7 @@
 ﻿using BSSApp.FA.Models;
 using BSSApp.FA.Web.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,9 @@ namespace BSSApp.FA.Web.Pages
 {
     public class AccountMasterBase:ComponentBase
     {
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
         [Inject]
         public IAcMasterService AcMasterService { get; set; }
 
@@ -25,6 +29,8 @@ namespace BSSApp.FA.Web.Pages
         public IAccountGroupMasterService AccountGroupMasterService { get; set; }
         public IEnumerable<AccountGroupMaster> AccountGroupMasters { get; set; } = new List<AccountGroupMaster>();
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         [Parameter]
         public string Lcd { get; set; }
         public string LedgerID { get; set; } ="3";
@@ -33,6 +39,11 @@ namespace BSSApp.FA.Web.Pages
 
         protected async override Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/identity/account/login");
+            }
             Ledgers = (await LedgerService.GetLedgers()).ToList();
             AccountGroupMasters= (await AccountGroupMasterService.GetAccountGroupMasters()).ToList();
             Lcd = Lcd ?? "GL";
@@ -40,7 +51,7 @@ namespace BSSApp.FA.Web.Pages
         }
         protected async void OnAccountGroupChange(ChangeEventArgs AccountGroupChange)
         {
-            int val = 0;
+            int val;
             //******************Data Fetching through lambda-expression
             //AcMastersNew = (IEnumerable<AcMaster>) await AcMasterService.GetMaxAccountNo(AccountGroupChange.Value.ToString());
 

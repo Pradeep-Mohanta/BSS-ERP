@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BSSApp.FA.Web.Pages
 {
-    public class MainPageBase:ComponentBase
+    public class BookReportBase:ComponentBase
     {
     }
 }

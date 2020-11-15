@@ -50,12 +50,13 @@ namespace BSSApp.FA.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from database");
             }
         }
-        [HttpGet("userWise")]
-        public async Task<ActionResult<IEnumerable<ModuleObjectMaster>>> GetModuleObjectMaster_userWise(string userName, string moduleCode)
+        [HttpGet("{userwise}")]
+        public async Task<ActionResult<IEnumerable<ModuleObjectMaster>>> GetModuleObjectMaster_userWise(string userName, int moduleID,string objectType)
         {
             try
             {
-                var result = await moduleObjectMasterRepository.GetModuleObjects_user_ModuleWise(userName, moduleCode);
+                var result = await moduleObjectMasterRepository
+                            .GetModuleObjects_user_ModuleWise(userName, moduleID,objectType);
                 if (result.Any())
                 {
                     return Ok(result);

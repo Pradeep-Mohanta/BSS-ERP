@@ -10,6 +10,6 @@ namespace BSSApp.FA.Api.Models
     {
         Task<IEnumerable<ModuleObjectMaster>> GetModuleObjectMasters();
         Task<ModuleObjectMaster> GetModuleObjectMaster(int id);
-        Task<IEnumerable<ModuleObjectMaster>> GetModuleObjects_user_ModuleWise(string userName,string moduleCode);
+        Task<IEnumerable<ModuleObjectMaster>> GetModuleObjects_user_ModuleWise(string userName,int moduleID,string objectType);
     }
 }

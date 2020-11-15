@@ -43,7 +43,8 @@ namespace BSSApp.FA.Api
             services.AddScoped<ICostCenterRepository, CostCenterRepository>();
             services.AddScoped<IUserObjectAssignMasterRepository, UserObjectAssignMasterRepository>();
             services.AddScoped<IModuleObjectMasterRepository, ModuleObjectMasterRepository>();
-
+            services.AddScoped<IModuleMasterRepository, ModuleMasterRepository>();
+            services.AddScoped<IUserAssignModuleRepository, UserAssignModuleRepository>();
             services.AddRazorPages();
             services.AddControllers();
             services.AddControllersWithViews().AddNewtonsoftJson();

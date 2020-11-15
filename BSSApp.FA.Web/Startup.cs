@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Blazored.Modal;
+using BSSApp.FA.Models;
 
 namespace BSSApp.FA.Web
 {
@@ -27,6 +28,9 @@ namespace BSSApp.FA.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //string basePath = "https://localhost:44396/";
+            services.AddAuthentication("Identity.Application")
+                    .AddCookie();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazoredModal();
@@ -58,6 +62,13 @@ namespace BSSApp.FA.Web
             services.AddHttpClient<ICostCenterService, CostCenterService>(client => {
                 client.BaseAddress = new Uri("https://localhost:44396/");
             });
+            services.AddHttpClient<IUserAssignModuleService, UserAssignModuleService>(client => {
+                client.BaseAddress = new Uri("https://localhost:44396/");
+            });
+            services.AddHttpClient<IModuleObjectMasterService, ModuleObjectMasterService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44396/");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,7 +89,8 @@ namespace BSSApp.FA.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

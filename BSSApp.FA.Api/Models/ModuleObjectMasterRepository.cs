@@ -25,14 +25,16 @@ namespace BSSApp.FA.Api.Models
         {
             return await appDbContext.ModuleObjectMaster
                         .Include(a=>a.UserObjectAssignMaster)
+                        .Include(b=>b.ModuleMaster)
                         .ToListAsync();
         }
-        public async Task<IEnumerable<ModuleObjectMaster>> GetModuleObjects_user_ModuleWise(string userName,string moduleCode)
+        public async Task<IEnumerable<ModuleObjectMaster>> GetModuleObjects_user_ModuleWise(string userName,int moduleID,string objectType)
         {
             IQueryable<ModuleObjectMaster> queryUser = appDbContext.ModuleObjectMaster
                                     .Include(a => a.UserObjectAssignMaster)
+                                    .Include(b=>b.ModuleMaster)
                                     .Where(a => a.UserObjectAssignMaster.UserName.Contains(userName) 
-                                                && a.ModuleCode=="FA" && a.ObjectType=="Master");
+                                                && a.ModuleMasterID==moduleID && a.ObjectType==objectType);
             return await queryUser.ToListAsync();
         }
     }
