@@ -1,0 +1,110 @@
+﻿@using BSSApp.FA.Models
+@using BSSApp.FA.Web.Services;
+<div class="row">
+    @if (ModuleObjectMaster == null)
+    {
+        <div class="spinner"></div>
+    }
+    else
+    {
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white-50 text-center">
+                    <h5>Masters</h5>
+                </div>
+                <div class="card-body text-center">
+                    <EditForm Model="@ModuleObjectMaster">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        @foreach (var modMast in ModuleObjectMaster)
+                        {
+                            <div><a href="@modMast.ObjectName"> @modMast.ObjectDisplayCaption</a></div>
+                            <hr />
+                        }
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    }
+    @if (ModuleObjectMasterTrans == null)
+    {
+        <div class="spinner"></div>
+    }
+    else
+    {
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white-50 text-center">
+                    <h5>Transactions</h5>
+                </div>
+                <div class="card-body text-center">
+                    <EditForm Model="@ModuleObjectMasterTrans">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        @foreach (var modMastTrans in ModuleObjectMasterTrans)
+                        {
+                            <div><a href="@modMastTrans.ObjectName"> @modMastTrans.ObjectDisplayCaption</a></div>
+                            <hr />
+                        }
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (ModuleObjectMasterRpt == null)
+    {
+        <div class="spinner"></div>
+    }
+    else
+    {
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white-50 text-center">
+                    <h5>Reports</h5>
+                </div>
+                <div class="card-body text-center">
+                    <EditForm Model="@ModuleObjectMasterRpt">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        @foreach (var modMastRpt in ModuleObjectMasterRpt)
+                        {
+                            <div><a href="@modMastRpt.ObjectName"> @modMastRpt.ObjectDisplayCaption</a></div>
+                            <hr />
+                        }
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    [Parameter]
+    public int selectedModule { get; set; }
+    [Inject]
+    public IModuleObjectMasterService ModuleObjectMasterService { get; set; }
+    public IEnumerable<ModuleObjectMaster> ModuleObjectMaster { get; set; }
+    public IEnumerable<ModuleObjectMaster> ModuleObjectMasterTrans { get; set; }
+
+    public IEnumerable<ModuleObjectMaster> ModuleObjectMasterRpt { get; set; }
+    public string currentUserName { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        var authenticationState = await authenticationStateTask;
+        currentUserName = authenticationState.User.Identity.Name;
+
+        ModuleObjectMaster = await ModuleObjectMasterService.GetModuleObjects_user_ModuleWise(currentUserName,selectedModule, "Master");
+        ModuleObjectMasterTrans = await ModuleObjectMasterService.GetModuleObjects_user_ModuleWise(currentUserName, selectedModule, "Tran");
+        ModuleObjectMasterRpt = await ModuleObjectMasterService.GetModuleObjects_user_ModuleWise(currentUserName, selectedModule, "Report");
+
+        //ModuleObjectMaster = await ModuleObjectMasterService.GetModuleObjects_user_ModuleWise("pradeep", 1, "Master");
+        //ModuleObjectMasterTrans = await ModuleObjectMasterService.GetModuleObjects_user_ModuleWise("pradeep", 1, "Tran");
+        //ModuleObjectMasterRpt = await ModuleObjectMasterService.GetModuleObjects_user_ModuleWise("pradeep", 1, "Report");
+    }
+
+}

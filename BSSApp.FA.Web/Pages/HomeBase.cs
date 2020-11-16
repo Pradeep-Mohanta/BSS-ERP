@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.IO;
 namespace BSSApp.FA.Web.Pages
 {
     public class HomeBase: ComponentBase
@@ -42,6 +42,28 @@ namespace BSSApp.FA.Web.Pages
             httpWebRequest.Abort();
             findVal =strHtml;
             
+        }
+        protected void Button_Clickme()
+        {
+            string path = @"e:\VS2019Projects\BSS-ERP\BSSApp.FA.Web\Pages\MainEC.razor";
+            //string path = @"c:\Temp\MyTest.razor";
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            if (!File.Exists(path))
+            {
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine("<div class=\"row ml - 1 mr - 1\">");
+                    sw.WriteLine("<div class=\"col - sm - 12 text - center btn - gradian1 text - white - 50\">");
+                    sw.WriteLine("<h3>ERP System Configuration</h3>");
+                    sw.WriteLine("</div>");
+                    sw.WriteLine("</div>");
+                    sw.WriteLine("<MainERPLayout selectedModule=10></MainERPLayout>");
+                }
+            }
         }
     }
 }
