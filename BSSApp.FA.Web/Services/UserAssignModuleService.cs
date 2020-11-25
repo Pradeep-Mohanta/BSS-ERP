@@ -29,15 +29,7 @@ namespace BSSApp.FA.Web.Services
 
         public async Task<IEnumerable<UserAssignModule>> GetUserAssignModules_userName(string userName)
         {
-            try
-            {
             return await httpClient.GetJsonAsync<UserAssignModule[]>($"api/UserAssignModule/userwise?username={userName}");
-        }
-            catch (Exception ex)
-            {
-                //return StatusCode(StatusCodes.Status400BadRequest, "User not Access.");
-                throw ex;
-            }
 
         }
     }

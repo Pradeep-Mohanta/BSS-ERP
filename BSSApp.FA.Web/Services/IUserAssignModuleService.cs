@@ -11,5 +11,6 @@ namespace BSSApp.FA.Web.Services
         Task<IEnumerable<UserAssignModule>> GetUserAssignModules();
         Task<UserAssignModule> GetUserAssignModule(int id);
         Task<IEnumerable<UserAssignModule>> GetUserAssignModules_userName(string userName);
+
     }
 }

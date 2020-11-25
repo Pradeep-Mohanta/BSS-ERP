@@ -58,6 +58,21 @@ namespace BSSApp.FA.Web
             services.AddHttpClient<ICostCenterService, CostCenterService>(client => {
                 client.BaseAddress = new Uri("https://localhost:44396/");
             });
+            services.AddHttpClient<IUserAssignModuleService, UserAssignModuleService>(client => {
+                client.BaseAddress = new Uri("https://localhost:44396/");
+            });
+            services.AddHttpClient<IModuleObjectMasterService, ModuleObjectMasterService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44396/");
+            });
+            services.AddHttpClient<ITrnService, TrnService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44396/");
+            });
+            services.AddHttpClient<IBookMasterService, BookMasterService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44396/");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
