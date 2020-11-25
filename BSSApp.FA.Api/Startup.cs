@@ -30,6 +30,7 @@ namespace BSSApp.FA.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<AppDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
             services.AddScoped<IAcMasterRepository, AcMasterRepository>();
@@ -45,6 +46,9 @@ namespace BSSApp.FA.Api
             services.AddScoped<IModuleObjectMasterRepository, ModuleObjectMasterRepository>();
             services.AddScoped<IModuleMasterRepository, ModuleMasterRepository>();
             services.AddScoped<IUserAssignModuleRepository, UserAssignModuleRepository>();
+            services.AddScoped<ITrnRepository, TrnRepository>();
+            services.AddScoped<IBookMasterRepository, BookMasterRepository>();
+
             services.AddRazorPages();
             services.AddControllers();
             services.AddControllersWithViews().AddNewtonsoftJson();

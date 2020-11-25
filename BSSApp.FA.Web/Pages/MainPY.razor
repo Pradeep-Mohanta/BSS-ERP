@@ -1,8 +1,13 @@
-﻿@page "/mainpy"
+﻿@page "/mainpy/{ModuleMasterID}"
 @attribute [Authorize]
 <div class="row ml-1 mr-1">
     <div class="col-sm-12 text-center btn-gradian1 text-white-50">
         <h3>Payroll System</h3>
     </div>
 </div>
-<MainERPLayout selectedModule=5></MainERPLayout>
+<MainERPLayout selectedModule=@int.Parse(ModuleMasterID)></MainERPLayout>
+@code
+{
+    [Parameter]
+    public string ModuleMasterID { get; set; }
+}

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace BSSApp.FA.Web.Pages
 {
-    public class BookMasterBase:ComponentBase
+    public class TrnTmpBase:ComponentBase
     {
+        public IEnumerable<TrnTmp> TrnsTmp { get; set; }
+
     }
 }

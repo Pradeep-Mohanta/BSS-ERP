@@ -22,5 +22,9 @@ namespace BSSApp.FA.Web.Services
 
         }
 
+        public async Task<IEnumerable<SubLedger>> GetSubLedgersInLedger(string lgrCode)
+        {
+            return await httpClient.GetJsonAsync<IEnumerable<SubLedger>>($"api/subledgers/{lgrCode}");
+        }
     }
 }

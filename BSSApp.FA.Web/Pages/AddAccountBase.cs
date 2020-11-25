@@ -31,12 +31,13 @@ namespace BSSApp.FA.Web.Pages
         public IEnumerable<AccountGroupMaster> AccountGroupMasters { get; set; } = new List<AccountGroupMaster>();
 
         //public Boolean Disable_Act_Footer { get; set; } = true;
-        public string maxaccountno { get; set; }
+        public string Maxaccountno { get; set; }
         public string CreatedUser { get; set; } = "Admin";
         protected BioScan.Components.BssMessagePopup MessageConfirmation;
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+
         protected async override Task OnInitializedAsync()
         {
             Ledgers = (await LedgerService.GetLedgers()).ToList();
@@ -44,7 +45,7 @@ namespace BSSApp.FA.Web.Pages
             //AcMasters = (AcMaster)await AcMasterService.GetAcMasters();
             AcMasters = new AcMaster
             {
-                Acno=maxaccountno,
+                Acno=Maxaccountno,
                 Ason=DateTime.Now,
                 CreatedBy = CreatedUser,
                 CreatedDate = DateTime.Now,
@@ -53,7 +54,7 @@ namespace BSSApp.FA.Web.Pages
                 AuthorisedBy = "pdp"
             };
         }
-        protected async void confirmAction_Click(bool actionConfirm)
+        protected async void ConfirmAction_Click(bool actionConfirm)
         {
             if (actionConfirm)
             {
@@ -73,9 +74,9 @@ namespace BSSApp.FA.Web.Pages
         }
         protected async void OnAccountGroupChange(ChangeEventArgs AccountGroupChange)
         {
-            int val = 0;
-            int LID = 0;
-            Int32.TryParse(L_ID, out LID);
+            int val;     
+            //int LID;
+            Int32.TryParse(L_ID, out int LID);
             //******************Data Fetching through lambda-expression
             //AcMastersNew = (IEnumerable<AcMaster>) await AcMasterService.GetMaxAccountNo(AccountGroupChange.Value.ToString());
             
@@ -86,12 +87,12 @@ namespace BSSApp.FA.Web.Pages
                 foreach (var acm in AcMastersNew)
                 {
                     Int32.TryParse(acm.Acno, out val);
-                    maxaccountno = (val + 1).ToString();
+                    Maxaccountno = (val + 1).ToString();
                     AcMasters = new AcMaster 
                     {
                         LedgerID = LID,
                         LedgerCode = L_Code,
-                        Acno = maxaccountno, 
+                        Acno = Maxaccountno, 
                         DrCr="D",
                         CountryID=1,
                         StateID=1,
@@ -108,14 +109,14 @@ namespace BSSApp.FA.Web.Pages
             else
             {
                 Int32.TryParse(AccountGroupChange.Value.ToString(), out val);
-                maxaccountno = (val + 1).ToString();
+                Maxaccountno = (val + 1).ToString();
                 //Int32.TryParse(L_ID, out LID);
                 AcMasters = new AcMaster 
                 { 
                     
                     LedgerID=LID,
                     LedgerCode=L_Code,
-                    Acno = maxaccountno,
+                    Acno = Maxaccountno,
                     DrCr = "D",
                     CountryID = 1,
                     StateID=1,
@@ -131,9 +132,8 @@ namespace BSSApp.FA.Web.Pages
         }
         protected async void Group_Change(string value)
         {
-            int val = 0;
-            int LID = 0;
-            Int32.TryParse(L_ID, out LID);
+            int val;
+            Int32.TryParse(L_ID, out int LID);
             BSheetGID = value;
             //******************Data Fetching through lambda-expression
             //AcMastersNew = (IEnumerable<AcMaster>) await AcMasterService.GetMaxAccountNo(AccountGroupChange.Value.ToString());
@@ -145,12 +145,12 @@ namespace BSSApp.FA.Web.Pages
                 foreach (var acm in AcMastersNew)
                 {
                     Int32.TryParse(acm.Acno, out val);
-                    maxaccountno = (val + 1).ToString();
+                    Maxaccountno = (val + 1).ToString();
                     AcMasters = new AcMaster
                     {
                         LedgerID = LID,
                         LedgerCode = L_Code,
-                        Acno = maxaccountno,
+                        Acno = Maxaccountno,
                         DrCr = "D",
                         CountryID = 1,
                         StateID = 1,
@@ -167,13 +167,13 @@ namespace BSSApp.FA.Web.Pages
             else
             {
                 Int32.TryParse(value, out val);
-                maxaccountno = (val + 1).ToString();
+                Maxaccountno = (val + 1).ToString();
                 //Int32.TryParse(L_ID, out LID);
                 AcMasters = new AcMaster
                 {
                     LedgerID = LID,
                     LedgerCode = L_Code,
-                    Acno = maxaccountno,
+                    Acno = Maxaccountno,
                     DrCr = "D",
                     CountryID = 1,
                     StateID = 1,
@@ -191,14 +191,12 @@ namespace BSSApp.FA.Web.Pages
         {
             string[] get_value = value.Split(",");
             L_ID = get_value[0].ToString();
-            int LID;
-            Int32.TryParse(L_ID, out LID);
+            Int32.TryParse(L_ID, out int LID);
             L_Code = get_value[1].ToString();
             LedgerID = value;
             BSheetGID = "0";
             AcMasters = new AcMaster
             {
-
                 LedgerID = LID,
                 LedgerCode = L_Code,
                 Acno = "",

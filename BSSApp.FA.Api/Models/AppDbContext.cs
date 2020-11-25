@@ -24,8 +24,10 @@ namespace BSSApp.FA.Api.Models
         public DbSet<AccountGroupMaster> AccountGroupMaster { get; set; }
         public DbSet<ModuleMaster> ModuleMaster { get; set; }
         public DbSet<ModuleObjectMaster> ModuleObjectMaster { get; set; }
-        public DbSet<ModuleObjectMasterR> ModuleObjectMasterR { get; set; }
         public DbSet<UserObjectAssignMaster> UserObjectAssignMaster { get; set; }
         public DbSet<UserAssignModule> UserAssignModule { get; set; }
+        public DbSet<Trn> Trn { get; set; }
+        public DbSet<BookMaster> BookMaster { get; set; }
+        public DbSet<BookCategory> BookCategory { get; set; }
     }
 }

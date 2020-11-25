@@ -9,6 +9,7 @@ namespace BSSApp.FA.Web.Services
     public interface ISubLedgerService
     {
         Task<List<SubLedger>> GetSubLedgers(string lcode);
+        Task<IEnumerable<SubLedger>> GetSubLedgersInLedger(string lgrCode);
         //Task<SubLedger> GetsubLedger(int id);
     }
 }
