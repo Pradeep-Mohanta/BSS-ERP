@@ -1,7 +1,4 @@
-﻿@using BSSApp.FA.Models;
-@using BSSApp.FA.Web.Services;
-
-<div class="top-row pl-4 navbar navbar-dark">
+﻿<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">Bio-Scan ERP</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -9,82 +6,45 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    @if (UserAssignModule == null)
-    {
-        <div class="spinner"></div>
-    }
-    else
-    {
-        <ul class="nav flex-column">
-            <AuthorizeView>
-                <NotAuthorized>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="/identity/account/login" Match="NavLinkMatch.All">
-                            <span class="oi oi-lock-locked" aria-hidden="true"></span> Login
-                        </NavLink>
-                    </li>
-
-                </NotAuthorized>
-                <Authorized>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                            <span class="oi oi-home" aria-hidden="true"></span> Home
-                        </NavLink>
-                    </li>
-                    @foreach (var md in UserAssignModule)
-                    {
-                        <li class="nav-item px-3">
-                            <NavLink class="nav-link" href=@($"main{md.ModuleMaster.ModuleCode}/{md.ModuleMasterID}") Match="NavLinkMatch.All">
-                                <span class="oi oi-arrow-circle-right" aria-hidden="true"></span>@md.ModuleMaster.ModuleName
-                            </NavLink>
-                        </li>
-                    }
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="/identity/account/logout" Match="NavLinkMatch.All">
-                            <span class="oi oi-power-standby" aria-hidden="true"></span> LogOut
-                        </NavLink>
-                    </li>
-                    @*@context.User.Identity.Name*@
-                </Authorized>
-            </AuthorizeView>
-        </ul>
-    }
-
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link">
+                <span class="oi oi-briefcase" aria-hidden="true"></span> Finance
+            </NavLink>
+            <ul>
+                <li>
+                    <NavLink class="nav-link"  href="AccountMaster">
+                        <span class="oi oi-briefcase" aria-hidden="true"></span> Account Master
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="nav-link" href="SubLedgerMaster">
+                        <span class="oi oi-briefcase" aria-hidden="true"></span> Sub-Ledger
+                    </NavLink>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="main">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </li>
+    </ul>
 </div>
 
-@code
-{
-    [CascadingParameter]
-    public Task<AuthenticationState> authenticationStateTask { get; set; }
-
-    [Inject]
-    public IUserAssignModuleService UserAssignModuleService { get; set; }
-
-    public IEnumerable<UserAssignModule> UserAssignModule { get; set; }
-    //public string loginUserName { get; set; } = "pradeep";
-    public int ModuleID { get; set; }
-    public string loginUserName { get; set; }
-
+@code {
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (authenticationStateTask != null)
-        {
-            var authenticationState = await authenticationStateTask;
-            if (authenticationState.User.Identity.Name != null)
-            {
-                loginUserName = authenticationState.User.Identity.Name;
-                UserAssignModule = await UserAssignModuleService.GetUserAssignModules_userName(loginUserName);
-            }
-        }
-        //UserAssignModule = await UserAssignModuleService.GetUserAssignModules_userName(loginUserName);
     }
 }

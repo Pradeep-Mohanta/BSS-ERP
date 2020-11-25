@@ -34,19 +34,8 @@ namespace BSSApp.FA.Api.Models
                                     .Include(a => a.UserObjectAssignMaster)
                                     .Include(b=>b.ModuleMaster)
                                     .Where(a => a.UserObjectAssignMaster.UserName.Contains(userName) 
-                                                && a.ModuleMasterID==moduleID && a.ObjectType==objectType);
-            if (queryUser.Count() == 0)
-            {
-                queryUser = appDbContext.ModuleObjectMaster
-                                    .Include(a => a.UserObjectAssignMaster)
-                                    .Include(b => b.ModuleMaster)
-                                    .Where(a => a.ModuleMasterID == moduleID && a.ObjectType == "Nothing");
-                return await queryUser.ToListAsync();
-            }
-            else
-            {
-                return await queryUser.ToListAsync();
-            }
+                                                && a.ModuleCode=="FA" && a.ObjectType=="Master");
+            return await queryUser.ToListAsync();
         }
     }
 }

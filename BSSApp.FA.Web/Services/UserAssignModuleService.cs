@@ -31,8 +31,8 @@ namespace BSSApp.FA.Web.Services
         {
             try
             {
-                return await httpClient.GetJsonAsync<UserAssignModule[]>($"api/UserAssignModule/userwise?username={userName}");
-            }
+            return await httpClient.GetJsonAsync<UserAssignModule[]>($"api/UserAssignModule/userwise?username={userName}");
+        }
             catch (Exception ex)
             {
                 //return StatusCode(StatusCodes.Status400BadRequest, "User not Access.");

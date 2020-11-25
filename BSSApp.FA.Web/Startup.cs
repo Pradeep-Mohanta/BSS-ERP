@@ -11,8 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Blazored.Modal;
-using BSSApp.FA.Models;
-using AutoMapper;
 
 namespace BSSApp.FA.Web
 {
@@ -29,10 +27,6 @@ namespace BSSApp.FA.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAutoMapper();
-            //string basePath = "https://localhost:44396/";
-            services.AddAuthentication("Identity.Application")
-                    .AddCookie();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazoredModal();
@@ -62,21 +56,6 @@ namespace BSSApp.FA.Web
                 client.BaseAddress = new Uri("https://localhost:44396/");
             });
             services.AddHttpClient<ICostCenterService, CostCenterService>(client => {
-                client.BaseAddress = new Uri("https://localhost:44396/");
-            });
-            services.AddHttpClient<IUserAssignModuleService, UserAssignModuleService>(client => {
-                client.BaseAddress = new Uri("https://localhost:44396/");
-            });
-            services.AddHttpClient<IModuleObjectMasterService, ModuleObjectMasterService>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44396/");
-            });
-            services.AddHttpClient<ITrnService, TrnService>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44396/");
-            });
-            services.AddHttpClient<IBookMasterService, BookMasterService>(client =>
-            {
                 client.BaseAddress = new Uri("https://localhost:44396/");
             });
         }

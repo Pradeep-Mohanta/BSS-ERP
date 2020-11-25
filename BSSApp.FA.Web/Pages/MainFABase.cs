@@ -11,7 +11,5 @@ namespace BSSApp.FA.Web.Pages
 {
     public class MainFABase:ComponentBase
     {
-        [Parameter]
-        public string ModuleMasterID { get; set; }
     }
 }
