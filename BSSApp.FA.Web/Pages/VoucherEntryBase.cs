@@ -24,7 +24,11 @@ namespace BSSApp.FA.Web.Pages
 
         [Inject]
         public ISubLedgerService SubLedgerService { get; set; }
-        public List<SubLedger> SubLedger { get; set; }
+        public IEnumerable<SubLedger> SubLedger { get; set; } = new List<SubLedger>();
+
+        [Inject]
+        public IAcMasterService AcMasterService { get; set; }
+        public IEnumerable<AcMaster> AcMaster { get; set; }
 
         [Inject]
         public IBookMasterService BookMasterService { get; set; }
@@ -34,6 +38,7 @@ namespace BSSApp.FA.Web.Pages
         public bool Dis_Add { get; set; } = false;
         public string LedgerID { get; set; }
         public string SubLedgerID { get; set; }
+        public string AccountCode { get; set; }
         public DateTime CurDate { get; set; } = DateTime.Now;
         
         public IEnumerable<BookMaster> BookMaster { get; set; } = new List<BookMaster>();
@@ -159,14 +164,19 @@ namespace BSSApp.FA.Web.Pages
         protected async void Ledger_Change(string val)
         {
             string[] sublCodestr = val.Split(",");
-            string sublcode = sublCodestr[1];
+            string LCode = sublCodestr[1];
             LedgerID = val;
-            SubLedger =(await SubLedgerService.GetSubLedgersInLedger(sublcode)).ToList();
+            SubLedger =await SubLedgerService.GetSubLedgersInLedger(LCode);
+            AcMaster = await AcMasterService.LedgerOfAccounts(LCode);
             StateHasChanged();
         }
         protected void SubLedger_Change(string myval)
         {
             SubLedgerID = myval;
+        }
+        protected void Account_Change(string SelectVal)
+        {
+            AccountCode = SelectVal;
         }
     }
 }

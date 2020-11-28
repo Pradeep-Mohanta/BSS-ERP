@@ -87,12 +87,16 @@
                                     <td>@filterTrn.Acno</td>
                                     <td>@filterTrn.AcMaster.Acname</td>
                                     <td>@filterTrn.Narr1 @filterTrn.Narr2</td>
-                                    <td>@if (filterTrn.Dc == "D")
-                                    {@filterTrn.Amount}</td>
-                                    <td>@if (filterTrn.Dc == "C")
-                                    {@filterTrn.Amount}</td>
-                                </tr>
-                            }
+                                    <td>
+                                        @if (filterTrn.Dc == "D")
+                                        {@filterTrn.Amount}
+                                </td>
+                                <td>
+                                    @if (filterTrn.Dc == "C")
+                                    {@filterTrn.Amount}
+                            </td>
+                        </tr>
+                    }
                         </tbody>
                     </table>
                 }
@@ -104,10 +108,10 @@
                 <label class="col-sm-2 col-form-label">Ledger</label>
                 <div class="col-sm-8">
                     <CustomInputSelect id="Ledger" class="form-control" ValueChanged="@((string val)=>Ledger_Change(val))"
-                                                                ValueExpression="@(()=>LedgerID)"
-                                                                Value="LedgerID">
-                        <option>Select Ledger</option>
-                        @foreach(var findLedger in Ledgers)
+                                       ValueExpression="@(()=>LedgerID)"
+                                       Value="LedgerID">
+                        <option value="0,GL">Select Ledger</option>
+                        @foreach (var findLedger in Ledgers)
                         {
                             <option value="@findLedger.LedgerID,@findLedger.LedgerCode">@findLedger.LedgerName</option>
                         }
@@ -119,18 +123,38 @@
                 <div>wait...</div>
             }
             else
-            { 
+            {
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Sub Ledger</label>
                     <div class="col-sm-8">
                         <InputSelect id="subledger" class="form-control"
                                      ValueChanged="@((string subval)=>SubLedger_Change(subval))"
                                      ValueExpression="@(()=>SubLedgerID)"
-                                     Value="SubLedgerID"
-                                     >
-                            @foreach(var findSubl in SubLedger)
+                                     Value="SubLedgerID">
+                            @foreach (var findSubl in SubLedger)
                             {
                                 <option>@findSubl.SubLedgerName </option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+            }
+            @if (AcMaster == null)
+            {
+                <div>wait...</div>
+            }
+            else
+            {
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Account Name</label>
+                    <div class="col-sm-8">
+                        <InputSelect id="subledger" class="form-control"
+                                     ValueChanged="@((string subval)=>Account_Change(subval))"
+                                     ValueExpression="@(()=>AccountCode)"
+                                     Value="AccountCode">
+                            @foreach (var findAcct in AcMaster)
+                            {
+                                <option>@findAcct.Acname </option>
                             }
                         </InputSelect>
                     </div>

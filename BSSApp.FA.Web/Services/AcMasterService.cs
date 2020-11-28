@@ -63,7 +63,7 @@ namespace BSSApp.FA.Web.Services
 
         public async void UpdatePatchAcMaster(int id, StringContent patchDoc)
         {
-            await httpClient.PatchAsync("api/AcMasters/updatePatch/"+id,patchDoc);
+            await httpClient.PatchAsync($"api/AcMasters/updatePatch/{id}",patchDoc);
         }
     }
 }
