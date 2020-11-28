@@ -24,6 +24,7 @@ namespace BSSApp.FA.Web.Pages
 
         [Inject]
         public ISubLedgerService SubLedgerService { get; set; }
+        public List<SubLedger> SubLedger { get; set; }
 
         [Inject]
         public IBookMasterService BookMasterService { get; set; }
@@ -155,9 +156,13 @@ namespace BSSApp.FA.Web.Pages
             Dis_Find = false;
             Dis_Add = true;
         }
-        protected void Ledger_Change(string val)
+        protected async void Ledger_Change(string val)
         {
+            string[] sublCodestr = val.Split(",");
+            string sublcode = sublCodestr[1];
             LedgerID = val;
+            SubLedger =(await SubLedgerService.GetSubLedgersInLedger(sublcode)).ToList();
+            StateHasChanged();
         }
         protected void SubLedger_Change(string myval)
         {

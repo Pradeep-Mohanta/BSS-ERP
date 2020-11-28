@@ -105,27 +105,37 @@
                 <div class="col-sm-8">
                     <CustomInputSelect id="Ledger" class="form-control" ValueChanged="@((string val)=>Ledger_Change(val))"
                                                                 ValueExpression="@(()=>LedgerID)"
-                                                                Value="LedgerID"
-                                                                >
+                                                                Value="LedgerID">
+                        <option>Select Ledger</option>
                         @foreach(var findLedger in Ledgers)
                         {
-                            <option value="@findLedger.LedgerID">@findLedger.LedgerName</option>
+                            <option value="@findLedger.LedgerID,@findLedger.LedgerCode">@findLedger.LedgerName</option>
                         }
                     </CustomInputSelect>
                 </div>
             </div>
-            <div class="form-group row">
-                <label class="=col-sm-1 col-form-label">Sub Ledger</label>
-                <div class="col-sm-8">
-                    <InputSelect id="subledger" class="form-control"
-                                 ValueChanged="@((string subval)=>SubLedger_Change(subval))"
-                                 ValueExpression="@(()=>SubLedgerID)"
-                                 Value="SubLedgerID"
-                                 >
-
-                    </InputSelect>
+            @if (SubLedger == null)
+            {
+                <div>wait...</div>
+            }
+            else
+            { 
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Sub Ledger</label>
+                    <div class="col-sm-8">
+                        <InputSelect id="subledger" class="form-control"
+                                     ValueChanged="@((string subval)=>SubLedger_Change(subval))"
+                                     ValueExpression="@(()=>SubLedgerID)"
+                                     Value="SubLedgerID"
+                                     >
+                            @foreach(var findSubl in SubLedger)
+                            {
+                                <option>@findSubl.SubLedgerName </option>
+                            }
+                        </InputSelect>
+                    </div>
                 </div>
-            </div>
+            }
         }
 
     </EditForm>

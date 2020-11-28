@@ -14,6 +14,7 @@ namespace BSSApp.FA.Web.Pages
         //readonly HttpClient httpClient;
         [Inject]
         public ILedgerService LedgerService { get; set; }
+
         [Inject]
         public ISubLedgerService SubLedgerService { get; set; }
 
@@ -38,7 +39,7 @@ namespace BSSApp.FA.Web.Pages
             SubLedgers = (await SubLedgerService.GetSubLedgers($"{val}")).ToList();
 
         }
-        protected async Task ledgerChange(ChangeEventArgs ledgerEvent)
+        protected async Task LedgerChange(ChangeEventArgs ledgerEvent)
         {
             LedgerID = ledgerEvent.Value.ToString();
             //string myval = LedgerID;
