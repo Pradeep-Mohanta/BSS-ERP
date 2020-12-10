@@ -29,5 +29,6 @@ namespace BSSApp.FA.Api.Models
         public DbSet<Trn> Trn { get; set; }
         public DbSet<BookMaster> BookMaster { get; set; }
         public DbSet<BookCategory> BookCategory { get; set; }
+        public DbSet <TrnMemo> TrnMemo { get; set; }
     }
 }

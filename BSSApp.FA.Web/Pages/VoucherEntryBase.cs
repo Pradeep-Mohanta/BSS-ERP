@@ -17,6 +17,12 @@ namespace BSSApp.FA.Web.Pages
         public ITrnService TrnService { get; set; }
         public IEnumerable<Trn> TrnFindNew { get; set; } = new List<Trn>();
         public Trn Trns { get; set; } = new Trn();
+        public TrnMemo TrnMemos { get; set; }
+        
+        public List<Trn> MyList { get; set; } = new List<Trn>();
+
+        public Trn TrnMemoNew { get; set; }
+        public TrnMemo TrnMemo_sec { get; set; } = new TrnMemo();
         public IEnumerable<Trn> TrnFind { get; set; } = new List<Trn>();
         [Inject]
         public ILedgerService LedgerService { get; set; }
@@ -32,17 +38,41 @@ namespace BSSApp.FA.Web.Pages
 
         [Inject]
         public IBookMasterService BookMasterService { get; set; }
-        //public List<BookMaster> BookMaster { get; set; }
+        public IEnumerable<BookMaster> BookMaster { get; set; } = new List<BookMaster>();
+
+        [Inject]
+        public ICostCenterService CostCenterService { get; set; }
+        public IEnumerable<CostCenter> CostCenter { get; set; }
+        [Inject]
+        public ITrnMemoService TrnMemoService { get; set; }
+        
+
         public string VoucherNo { get; set; }
         public bool Dis_Find { get; set; } = false;
         public bool Dis_Add { get; set; } = false;
+
+        public string FetchLedgerID { get; set; }
         public string LedgerID { get; set; }
+        public string LedgerCode { get; set; }
+
+        public string FetchSubLedger { get; set; }
         public string SubLedgerID { get; set; }
-        public string AccountCode { get; set; }
+        public string SubLedgerCode { get; set; }
+
+        public string FetchAccountCode { get; set; }
+        public string AccountID { get; set; }
+        public string AccountNo { get; set; }
+
+        public string CostCenterID { get; set; }
         public DateTime CurDate { get; set; } = DateTime.Now;
-        
-        public IEnumerable<BookMaster> BookMaster { get; set; } = new List<BookMaster>();
-        public string BookNo { get; set; }
+
+        public string SelectBookID { get; set; }
+        public string SelectBookNo { get; set; }
+        public string FetchBookNo { get; set; }
+
+        public int Ctr { get; set; } = 0;
+
+        //public List<Trn> Trnm;
         protected async override Task OnInitializedAsync()
         {
             //Trns =(Trn) await TrnService.GetTrns();
@@ -53,7 +83,7 @@ namespace BSSApp.FA.Web.Pages
         {
             Dis_Find = true;
             Dis_Add = false;
-            Int32.TryParse(BookNo, out int BkNo);
+            Int32.TryParse(SelectBookNo, out int BkNo);
             TrnFind = await TrnService.GetTrnVdtBook(CurDate, BkNo);
             //if (TrnFind.Count() > 0)
             //{
@@ -101,7 +131,10 @@ namespace BSSApp.FA.Web.Pages
         }
         protected void BookChange(string value)
         {
-            BookNo = value;
+            string[] SBookNo = value.Split(",");
+            FetchBookNo = value;
+            SelectBookID = SBookNo[0];
+            SelectBookNo = SBookNo[1];
             //TrnFind = (IEnumerable<Trn>)await TrnService.GetTrnVdtBook(CurDate, int.Parse(BookNo));
 
         }
@@ -163,20 +196,116 @@ namespace BSSApp.FA.Web.Pages
         }
         protected async void Ledger_Change(string val)
         {
+            FetchLedgerID = val;
             string[] sublCodestr = val.Split(",");
-            string LCode = sublCodestr[1];
-            LedgerID = val;
-            SubLedger =await SubLedgerService.GetSubLedgersInLedger(LCode);
-            AcMaster = await AcMasterService.LedgerOfAccounts(LCode);
+            LedgerID = sublCodestr[0];
+            LedgerCode = sublCodestr[1];
+            SubLedger = await SubLedgerService.GetSubLedgersInLedger(LedgerCode);
+            AcMaster = await AcMasterService.LedgerOfAccounts(LedgerCode);
+            CostCenter = await CostCenterService.GetCostCenters();
             StateHasChanged();
         }
         protected void SubLedger_Change(string myval)
         {
-            SubLedgerID = myval;
+            FetchSubLedger = myval;
+            string[] subL = myval.Split(",");
+            SubLedgerID = subL[0];
+            SubLedgerCode = subL[1];
         }
         protected void Account_Change(string SelectVal)
         {
-            AccountCode = SelectVal;
+            FetchAccountCode = SelectVal;
+            string[] ActCode = SelectVal.Split(",");
+            AccountID = ActCode[0];
+            AccountNo = ActCode[1];
         }
+        protected void CostCenter_Change(string value)
+        {
+            CostCenterID = value;
+        }
+        protected void AddSubVoucher()
+        {
+            //Trnm = new List<Trn>()
+            //{
+            //    new Trn()
+            //    {
+            //        AcMasterID= int.Parse(AccountID)
+            //    }
+            //};
+            //TrnMemoNew = new Trn
+            //{
+            //    AcMaster = Trns.AcMaster,
+            //    BookMaster = Trns.BookMaster,
+            //    CostCenter = Trns.CostCenter,
+            //    Ledger = Trns.Ledger,
+            //    SubLedger = Trns.SubLedger,
+            //    AcMasterID = int.Parse(AccountID),
+            //    Acno = AccountNo,
+            //    Amount = Trns.Amount,
+            //    BranchCode = "01",
+            //    BookNo = int.Parse(SelectBookNo),
+            //    BookMasterID = int.Parse(SelectBookID),
+            //    ChqBr = "",
+            //    ChequeNo = Trns.ChequeNo,
+            //    Comp_Id = "001",
+            //    CostCenterID = int.Parse(CostCenterID),
+            //    Dc = Trns.Dc,
+            //    Entrydate = CurDate,
+            //    LedgerID = int.Parse(LedgerID),
+            //    Narr1 = Trns.Narr1,
+            //    Narr2 = "",
+            //    Narr3 = "",
+            //    PairNo = "",
+            //    RefModuleCode = "FA",
+            //    ShareTrnNo = "",
+            //    Slcd = LedgerCode,
+            //    SubLedgerID = int.Parse(SubLedgerID),
+            //    SubLcd = SubLedgerCode,
+            //    SvNo = 1,
+            //    Username = "admin",
+            //    Vdt = Trns.Vdt,
+            //    Vno = "0000001"
+            //};
+            MyList.Add(new Trn 
+                    {
+                        AcMaster = Trns.AcMaster,
+                        BookMaster = Trns.BookMaster,
+                        CostCenter = Trns.CostCenter,
+                        Ledger = Trns.Ledger,
+                        SubLedger = Trns.SubLedger,
+                        AcMasterID = int.Parse(AccountID),
+                        Acno = AccountNo,
+                        Amount = Trns.Amount,
+                        BranchCode = "01",
+                        BookNo = int.Parse(SelectBookNo),
+                        BookMasterID = int.Parse(SelectBookID),
+                        ChqBr = "",
+                        ChequeNo = Trns.ChequeNo,
+                        Comp_Id = "001",
+                        CostCenterID = int.Parse(CostCenterID),
+                        Dc = Trns.Dc,
+                        Entrydate = CurDate,
+                        LedgerID = int.Parse(LedgerID),
+                        Narr1 = Trns.Narr1,
+                        Narr2 = "",
+                        Narr3 = "",
+                        PairNo = "",
+                        RefModuleCode = "FA",
+                        ShareTrnNo = "",
+                        Slcd = LedgerCode,
+                        SubLedgerID = int.Parse(SubLedgerID),
+                        SubLcd = SubLedgerCode,
+                        SvNo = Ctr== 0 ? 1 : MyList.Max(a=> a.SvNo) + 1,
+                        Username = "admin",
+                        Vdt = Trns.Vdt,
+                        Vno = "0000001"
+                    });
+            Ctr += 1;
+            //trnMemo_sec.AcMaster = TrnMemoNew.AcMaster;
+            //trnMemo_sec.AcMasterID = TrnMemoNew.AcMasterID;
+            //trnMemo_sec.Acno = TrnMemoNew.Acno;
+            //TrnMemos = await TrnMemoService.AddTrnMemo(trnMemo_sec);
+        }
+       
     }
 }

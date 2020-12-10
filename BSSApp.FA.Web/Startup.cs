@@ -73,6 +73,10 @@ namespace BSSApp.FA.Web
             {
                 client.BaseAddress = new Uri("https://localhost:44396/");
             });
+            services.AddHttpClient<ITrnMemoService, TrnMemoService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44396/");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

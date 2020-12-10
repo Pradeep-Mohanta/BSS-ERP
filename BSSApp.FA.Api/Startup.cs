@@ -48,6 +48,7 @@ namespace BSSApp.FA.Api
             services.AddScoped<IUserAssignModuleRepository, UserAssignModuleRepository>();
             services.AddScoped<ITrnRepository, TrnRepository>();
             services.AddScoped<IBookMasterRepository, BookMasterRepository>();
+            services.AddScoped<ITrnMemoRepository, TrnMemoRepository>();
 
             services.AddRazorPages();
             services.AddControllers();

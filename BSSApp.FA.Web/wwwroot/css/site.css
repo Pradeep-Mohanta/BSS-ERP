@@ -227,4 +227,12 @@ app {
         border: 2px solid green;
         border-radius: 2px;
     }
+    .vertline {
+        border-left: 6px solid green;
+        height: 500px;
+        position: absolute;
+        left: 50%;
+        margin-left: -3px;
+        top: 0;
+    }
 }
