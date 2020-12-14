@@ -9,7 +9,7 @@ namespace BSSApp.FA.Models
     public class CostCenter
     {
         public int CostCenterID { get; set; }
-
+        [Required]
         public string CostCenterName { get; set; }
 
         public string CCAdd1 { get; set; }

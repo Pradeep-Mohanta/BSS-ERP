@@ -1,12 +1,16 @@
 ﻿@page "/voucherentry"
 @inherits VoucherEntryBase
+
+@*@inherits InputTextOnInput*@
 <h3>Voucher Entry</h3>
 <div>
     <EditForm Model="@Trns">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Voucher Date</label>
             <div class="col-sm-4">
-                <InputDate id="vdt" class="form-control" @bind-Value="CurDate">
+                <InputDate id="vdt" disabled="@IsDisableVoucherDateAndBook" class="form-control" @bind-Value="VoucherDate">
 
                 </InputDate>
             </div>
@@ -14,7 +18,7 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Select Book</label>
             <div class="col-sm-8">
-                <CustomInputSelect id="BookID" class="form-control"
+                <CustomInputSelect id="BookID" class="form-control" disabled="@IsDisableVoucherDateAndBook"
                                    ValueChanged="@((string value)=>BookChange(value))"
                                    ValueExpression="@(()=>FetchBookNo)"
                                    Value="FetchBookNo">
@@ -29,12 +33,15 @@
         </div>
         <hr class="hr-new1" />
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Action</label>
-            <div class="col-sm-4">
-                <button id="NewV" class="btn btn-primary btn-width-accountMaster" @onclick="AddVoucher">Add New Voucher</button>
+            <label class="col-sm-2 col-form-label">Actions</label>
+            <div class="col-sm-2">
+                <button id="NewV" class="btn btn-primary" style="width:200px" @onclick="AddVoucher">Add New Voucher</button>
             </div>
-            <div class="col-sm-4">
-                <button id="FindVB" class="btn btn-primary btn-width-accountMaster" @onclick="FindVoucher">Find Voucher</button>
+            <div class="col-sm-2">
+                <a href="/VoucherEntry" @onclick="VoucherPageReload" class="btn btn-primary" style="width:200px">Cancel Voucher</a>
+            </div>
+            <div class="col-sm-2">
+                <button id="FindVB" class="btn btn-primary" style="width:200px" @onclick="FindVoucher">Find Voucher</button>
             </div>
         </div>
         <hr class="hr-new1" />
@@ -153,10 +160,10 @@
                                      ValueChanged="@((string subval)=>Account_Change(subval))"
                                      ValueExpression="@(()=>FetchAccountCode)"
                                      Value="FetchAccountCode">
-                            <option>Select Account</option>
+                            <option value="0">Select Account</option>
                             @foreach (var findAcct in AcMaster)
                             {
-                                <option value="@findAcct.AcMasterID,@findAcct.Acno">@findAcct.Acno @findAcct.Acname </option>
+                                <option value="@findAcct.AcMasterID,@findAcct.Acno,@findAcct.Acname">@findAcct.Acno @findAcct.Acname </option>
                             }
                         </InputSelect>
                     </div>
@@ -181,43 +188,50 @@
                                 <option value="@findCC.CostCenterID"> @findCC.CostCenterName </option>
                             }
                         </InputSelect>
+                        <ValidationMessage For="@(()=>Trns.CostCenterID)" />
                     </div>
                 </div>
             }
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Narration</label>
                 <div class="col-sm-8">
-                    <InputTextArea id="Narration" class="form-control" @bind-Value="Trns.Narr1">
-
-                    </InputTextArea>
+                    <InputTextAreaOnInput Area id="Narration" bind-value:event="oninput" multiline="true"
+                                          class="form-control" @bind-Value="Narration1">
+                    </InputTextAreaOnInput>
+                    <ValidationMessage For="@(()=>Trns.Narr1)"></ValidationMessage>
                 </div>
+                <div>Char left:@( Narration1 != null?(200-(Narration1).Length).ToString():"200")</div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Cheque No</label>
                 <div class="col-sm-4">
-                    <InputText id="ChequeNo" class="form-control" @bind-Value="Trns.ChequeNo">
-
+                    <InputText id="ChequeNo" class="form-control" @bind-Value="ChequeNo">
                     </InputText>
                 </div>
+                <label class="col-sm-1 col-form-label">SV No</label>
+                <div><InputNumber id="SvNo" style="width:50px" class="form-control" @bind-Value="SVNo"></InputNumber></div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Amount</label>
                 <div class="col-sm-4">
-                    <InputNumber id="Amount" class="form-control" @bind-Value="Trns.Amount">
+                    <InputNumber id="Amount" class="form-control" @bind-Value="Amount">
                     </InputNumber>
                 </div>
+                <button type="submit" class="btn btn-success btn-width" style="width:170px" @onclick="@(()=>UpdateSubVoucher(MyList))">
+                    Update SubVoucher
+                </button>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Debit/Credit</label>
                 <div class="col-sm-4">
-                    <InputSelect id="DrCr" class="form-control" @bind-Value="Trns.Dc">
+                    <InputSelect id="DrCr" class="form-control" @bind-Value="DebitCredit">
                         <option>Select Trn</option>
                         <option value="D">Debit</option>
                         <option value="C">Credit</option>
                     </InputSelect>
                 </div>
-                <button type="submit" class="btn btn-success btn-width" @onclick="AddSubVoucher">
-                    Save
+                <button type="submit" class="btn btn-success btn-width" style="width:170px" @onclick="AddSubVoucher">
+                    Add SubVoucher
                 </button>
             </div>
             @if (MyList == null)
@@ -226,14 +240,55 @@
             }
             else
             {
-                foreach (var ml in MyList)
+                if (Dis_voucherTable == true)
                 {
-                    <InputText id="MLVno" style="width:100px" @bind-Value="@ml.Vno">@ml.Vno</InputText>
-                    <InputNumber id="MLSvno" style="width:40px;text-align:center" @bind-Value="@ml.SvNo">@ml.SvNo</InputNumber>
-                    <InputText id="MLAcno" style="width:100px" @bind-Value="@ml.Acno">@ml.Acno</InputText>
-                    <InputNumber id="MLAmount" style="width:100px" @bind-Value="@ml.Amount">@ml.Amount</InputNumber>
-                    <InputText id="MLDC" style="width:40px;text-align:center" @bind-Value="@ml.Dc">@ml.Dc</InputText>
-                    <br />
+                    <table style="border:1px solid green">
+                        <thead>
+                            <tr>
+                                <th style="border:1px solid green">Vdt</th>
+                                <th style="border:1px solid green">SvNo</th>
+                                <th style="border:1px solid green">Ledger</th>
+                                <th style="border:1px solid green">AcNo</th>
+                                <th style="border:1px solid green">Narration</th>
+                                <th style="border:1px solid green">Debit</th>
+                                <th style="border:1px solid green">Credit</th>
+                            </tr>
+                        </thead>
+
+                        @foreach (var ml in MyList)
+                        {
+                            <tr style="border:1px solid green">
+                                <td style="border:1px solid green;vertical-align:top">@ml.Vdt.Date</td>
+                                <td style="border:1px solid green;vertical-align:top">@ml.SvNo</td>
+                                <td style="border:1px solid green;vertical-align:top">@ml.Slcd</td>
+                                <td style="border:1px solid green;vertical-align:top">@ml.Acno</td>
+                                <td style="border:1px solid green;vertical-align:top">@ml.Narr1</td>
+                                <td style="border:1px solid green;vertical-align:top;text-align:center">@(ml.Dc == "D" ? @ml.Amount : 0)</td>
+                                <td style="border:1px solid green;vertical-align:top;text-align:center">@(ml.Dc == "C" ? @ml.Amount : 0)</td>
+                                <td><a class="btn btn-primary" @onclick="@(()=>FetchRow(ml))">Select</a></td>
+                            </tr>
+                        }
+                        <tr style="border:1px solid green;background-color:yellow">
+                            <td style="border:1px solid green;vertical-align:top"> </td>
+                            <td style="border:1px solid green;vertical-align:top"> </td>
+                            <td style="border:1px solid green;vertical-align:top"> </td>
+                            <td style="border:1px solid green;vertical-align:top;font-weight:bolder">Total </td>
+                            <td style="border:1px solid green;vertical-align:top"> </td>
+                            <td style="border:1px solid green;vertical-align:top;text-align:center;font-weight:bolder">@DrAmount</td>
+                            <td style="border:1px solid green;vertical-align:top;text-align:center;font-weight:bolder">@CrAmount</td>
+                        </tr>
+                        @*foreach (var ml in MyList)
+                        {
+                        <InputText id="MLVno" style="width:100px" @bind-Value="@ml.Vno">@ml.Vno</InputText>
+                        <InputNumber id="MLSvno" style="width:40px;text-align:center" @bind-Value="@ml.SvNo">@ml.SvNo</InputNumber>
+                        <InputText id="MLAcno" style="width:400px" @bind-Value="@ml.Acno">@ml.Acno</InputText>
+                        <InputNumber id="MLAcName" @bind-Value="@ml.AcMasterID">@ml.AcMasterID </InputNumber>
+                        <InputTextArea id="MLNarr" style="width:400px" @bind-Value="@ml.Narr1">@ml.Narr1</InputTextArea>
+                        <InputNumber id="MLAmount" style="width:100px" @bind-Value="@ml.Amount">@ml.Amount</InputNumber>
+                        <InputText id="MLDC" style="width:40px;text-align:center" @bind-Value="@ml.Dc">@ml.Dc</InputText>
+                        <br />
+                        }*@
+                    </table>
                 }
 
             }

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSSApp.FA.Api", "BSSApp.FA.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BioScan.Components", "BioScan.Components\BioScan.Components.csproj", "{A573F020-CA7E-49D7-BFB5-004BA17E3221}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTest.FA", "XUnitTest.FA\XUnitTest.FA.csproj", "{B32E654E-4D17-4031-9959-976AFD8CB09C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTest.FA", "XUnitTest.FA\XUnitTest.FA.csproj", "{B32E654E-4D17-4031-9959-976AFD8CB09C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

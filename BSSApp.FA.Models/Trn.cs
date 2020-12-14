@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace BSSApp.FA.Models
 {
     public class Trn
@@ -16,6 +17,8 @@ namespace BSSApp.FA.Models
         public string SubLcd { get; set; }
         public int AcMasterID { get; set; }
         public string Acno { get; set; }
+
+        [MaxLength(200,ErrorMessage ="Max length for narration is 200")]
         public string Narr1 { get; set; }
         public string Narr2 { get; set; }
         public string Narr3 { get; set; }
@@ -26,6 +29,7 @@ namespace BSSApp.FA.Models
         public int BookMasterID { get; set; }
         public int BookNo { get; set; }
         public string Username { get; set; }
+
         public int CostCenterID { get; set; }
         public string Comp_Id { get; set; }
         public string ChequeNo { get; set; }
