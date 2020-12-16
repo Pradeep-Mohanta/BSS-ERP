@@ -61,6 +61,7 @@ namespace BSSApp.FA.Web.Pages
         public bool Dis_Find { get; set; } = false;
         public bool Dis_Add { get; set; } = false;
         public bool Dis_voucherTable { get; set; } = false;
+        public bool updateSubVoucherDisplay { get; set; } = false;
         public bool IsDisableVoucherDateAndBook { get; set; } = false;
         public bool FromTableRowSelect { get; set; } = false;
         public string FetchLedgerID { get; set; }
@@ -353,13 +354,14 @@ namespace BSSApp.FA.Web.Pages
         protected void FetchRow(Trn trn_ml)
         {
             FromTableRowSelect = true;
+            updateSubVoucherDisplay = true;
             string[] selectedAcnoName = trn_ml.Acno.Split("#");
             string selectedAcno = selectedAcnoName[0];
             string selectedName = selectedAcnoName[1];
             string selectedLedger= trn_ml.LedgerID.ToString() + "," + trn_ml.Slcd;
             Ledger_Change(selectedLedger);
             FetchSubLedger = trn_ml.SubLedgerID.ToString() + "," + trn_ml.SubLcd;
-            FetchAccountCode = trn_ml.AcMasterID.ToString() + "," + selectedAcnoName[0] + "," + selectedAcnoName[1];
+            FetchAccountCode = trn_ml.AcMasterID.ToString().Trim() + "," + selectedAcnoName[0].Trim() + "," + selectedAcnoName[1].Trim();
             CostCenterID = trn_ml.CostCenterID.ToString();
             Narration1 = trn_ml.Narr1;
             SVNo = trn_ml.SvNo;
@@ -368,13 +370,43 @@ namespace BSSApp.FA.Web.Pages
             Amount = trn_ml.Amount;
             DebitCredit = trn_ml.Dc;
         }
-        protected void UpdateSubVoucher(List<Trn> UpdList)
+        
+        protected void UpdateSubVoucher(List<Trn> MyList)
         {
-            //UpdList.Where(x=>x.SvNo ==2)
-            //list = list.Where(c=>c.Name == "height")
-            //.Select(new t() { Name = c.Name, Value = 30 })
-            //.Union(list.Where(c => c.Name != "height"))
-            //.ToList();
+            DrAmount = 0;
+            CrAmount = 0;
+            updateSubVoucherDisplay = false;
+            string[] updAcno =FetchAccountCode.Split(",");
+            string toUpdAcno = updAcno[1] + "#" + updAcno[2];
+            string updAcMasterID = updAcno[0];
+            string updAcName = updAcno[2];
+            string[] updLedger = FetchLedgerID.Split(",");
+            string updLedgerID = updLedger[0];
+            string updslcd = updLedger[1];
+            string[] updSubLedger = FetchSubLedger.Split(",");
+            string updSubledgerID = updSubLedger[0];
+            string updSubledgerCode = updSubLedger[1];
+            MyList.Where(x => x.SvNo == SVNo).ToList()
+                .ForEach(x => 
+                {
+                    x.LedgerID =int.Parse(updLedgerID);x.Slcd = updslcd; x.SubLedgerID =int.Parse(updSubledgerID); x.SubLcd = updSubledgerCode;
+                    x.AcMasterID = int.Parse(updAcMasterID); x.Acno = toUpdAcno; x.CostCenterID = int.Parse(CostCenterID);
+                    x.Narr1 = Narration1;x.ChequeNo = ChequeNo;x.PairNo=PairNo; x.Amount = Amount;x.Dc = DebitCredit;
+                });
+            MyList.Where(x => x.Dc == "D").ToList().ForEach(x => DrAmount += x.Amount);
+            MyList.Where(x => x.Dc == "C").ToList().ForEach(x => CrAmount += x.Amount);
+        }
+        protected void SaveVoucher()
+        {
+            //string myval;
+            //myval = "1000";
+            var SaveTrn = MyList;
+            SaveTrn.ForEach(x => x.Acno = x.Acno.Substring(0, x.Acno.IndexOf("#")));
+            //foreach(var saveTrn in SaveTrn)
+            //{
+            //    TrnService.AddTrn(saveTrn);
+            //}
         }
     }
+    
 }

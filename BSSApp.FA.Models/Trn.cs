@@ -11,6 +11,8 @@ namespace BSSApp.FA.Models
         public string Vno { get; set; }
         public int SvNo { get; set; }
         public DateTime Vdt { get; set; }
+
+        [Required]
         public int LedgerID { get; set; }
         public string Slcd { get; set; }
         public int SubLedgerID { get; set; }

@@ -120,5 +120,12 @@ namespace BSSApp.FA.Api.Models
 
             return await trnQuery.ToListAsync();
         }
+
+        public async Task<Trn[]> GetTrnVNoMonthlyYearly(string monthYear, DateTime vdt, int BookNo)
+        {
+            Trn[] trn;
+            trn = await appDbContext.Trn.FromSqlRaw("execute GetMaxAcno @p0,@p1,@p2", monthYear,vdt,BookNo).ToArrayAsync();
+            return trn;
+        }
     }
 }
