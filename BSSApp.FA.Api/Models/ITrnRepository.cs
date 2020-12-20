@@ -12,7 +12,7 @@ namespace BSSApp.FA.Api.Models
         Task<Trn> GetTrn(int TrnID);
         Task<IEnumerable<Trn>> GetTrnsVno(string Vno,DateTime vdt,int BookNo);
         Task<IEnumerable<Trn>> GetTrnVdtBook(DateTime vdt, int BookNo);
-        Task<Trn[]> GetTrnVNoMonthlyYearly(string monthYear,DateTime vdt, int BookNo);
+        Task<Trn[]> GetMaxVNoMonthlyYearly(string monthOrYear,DateTime vdt, int BookNo);
         Task<Trn> AddTrn(Trn trn);
         Task<Trn> UpdateTrn(Trn trn);
         Task<Trn> DeleteTrn(int TrnID);

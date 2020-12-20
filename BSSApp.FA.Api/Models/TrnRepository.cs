@@ -42,7 +42,7 @@ namespace BSSApp.FA.Api.Models
                         .Include(d => d.AcMaster)
                         .Include(e => e.BookMaster)
                         .Include(f => f.CostCenter)
-                        .Where(a => a.Vno==Vno && a.Vdt == Vdt && a.BookNo == BookNo)
+                        .Where(a => a.Vno==Vno && a.Vdt.Date == Vdt.Date && a.BookNo == BookNo)
                         .OrderBy(a => a.Vno)
                         .ThenBy(a => a.SvNo);
 
@@ -113,7 +113,7 @@ namespace BSSApp.FA.Api.Models
                         .Include(d => d.AcMaster)
                         .Include(e => e.BookMaster)
                         .Include(f => f.CostCenter)
-                        .Where(a => a.Vdt == vdt && a.BookNo == BookNo)
+                        .Where(a => a.Vdt.Date == vdt.Date && a.BookNo == BookNo)
                         .OrderBy(a => a.Vno)
                         .ThenBy(a => a.SvNo);
 
@@ -121,10 +121,10 @@ namespace BSSApp.FA.Api.Models
             return await trnQuery.ToListAsync();
         }
 
-        public async Task<Trn[]> GetTrnVNoMonthlyYearly(string monthYear, DateTime vdt, int BookNo)
+        public async Task<Trn[]> GetMaxVNoMonthlyYearly(string monthOrYear, DateTime vdt, int BookNo)
         {
             Trn[] trn;
-            trn = await appDbContext.Trn.FromSqlRaw("execute GetMaxAcno @p0,@p1,@p2", monthYear,vdt,BookNo).ToArrayAsync();
+            trn = await appDbContext.Trn.FromSqlRaw("execute Maximum_Voucher_No @p0,@p1,@p2", monthOrYear,vdt,BookNo).ToArrayAsync();
             return trn;
         }
     }

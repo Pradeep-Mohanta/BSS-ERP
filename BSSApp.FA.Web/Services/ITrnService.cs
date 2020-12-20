@@ -13,5 +13,6 @@ namespace BSSApp.FA.Web.Services
         Task<Trn> AddTrn(Trn newTrn);
         Task<Trn[]> GetTrnsVno(string Vno, DateTime vdt, int BookNo);
         Task<Trn[]> GetTrnVdtBook(DateTime vdt, int BookNo);
+        Task<Trn[]> GetMaxVNoMonthlyYearly(string monthOrYear, DateTime vdt, int BookNo);
     }
 }

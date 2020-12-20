@@ -16,14 +16,14 @@ namespace BSSApp.FA.Web.Pages
         [Inject]
         public ITrnService TrnService { get; set; }
         public IEnumerable<Trn> TrnFindNew { get; set; } = new List<Trn>();
+        public IEnumerable<Trn> TrnFind { get; set; } = new List<Trn>();
+        public IEnumerable<Trn> TrnFindMaxVno { get; set; } = new List<Trn>();
+        public List<Trn> MyList { get; set; } = new List<Trn>();
         public Trn Trns { get; set; } = new Trn();
         public TrnMemo TrnMemos { get; set; }
-        
-        public List<Trn> MyList { get; set; } = new List<Trn>();
-
         public Trn TrnMemoNew { get; set; }
         public TrnMemo TrnMemo_sec { get; set; } = new TrnMemo();
-        public IEnumerable<Trn> TrnFind { get; set; } = new List<Trn>();
+        
 
         [Inject]
         public ILedgerService LedgerService { get; set; }
@@ -51,7 +51,8 @@ namespace BSSApp.FA.Web.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        public string VoucherNo { get; set; }
+        public string VoucherNoFind { get; set; }
+        public string VoucherNumberSaved { get; set; }
         public int SVNo { get; set; }
         public string Narration1 { get; set; }
         public string ChequeNo { get; set; }
@@ -61,8 +62,10 @@ namespace BSSApp.FA.Web.Pages
         public bool Dis_Find { get; set; } = false;
         public bool Dis_Add { get; set; } = false;
         public bool Dis_voucherTable { get; set; } = false;
-        public bool updateSubVoucherDisplay { get; set; } = false;
+        public bool UpdateSubVoucherDisplay { get; set; } = false;
         public bool IsDisableVoucherDateAndBook { get; set; } = false;
+        public bool DisableVoucherSaveButton { get; set; } = true;
+        public bool DisableAdd_SubVoucherButton { get; set; } = true;
         public bool FromTableRowSelect { get; set; } = false;
         public string FetchLedgerID { get; set; }
         public string LedgerID { get; set; }
@@ -78,7 +81,18 @@ namespace BSSApp.FA.Web.Pages
         public string AccountName { get; set; }
 
         public string CostCenterID { get; set; }
-        public DateTime VoucherDate { get; set; } = DateTime.Now;
+        //public DateTime VoucherDate { get; set; } = DateTime.Now;
+        private DateTime CurDt = DateTime.Now;
+        //public string[] acno_name;
+        //public int arctr = 0;
+        public DateTime VoucherDate 
+            {
+                get { return CurDt; }
+                set { 
+                        CurDt = value;
+                        VoucherDateChange();
+                    } 
+            }
         public DateTime CurrentDate { get; set; } = DateTime.Now;
 
         public string SelectBookID { get; set; }
@@ -100,50 +114,6 @@ namespace BSSApp.FA.Web.Pages
             Dis_Add = false;
             Int32.TryParse(SelectBookNo, out int BkNo);
             TrnFind = await TrnService.GetTrnVdtBook(VoucherDate, BkNo);
-            #region old code
-            //if (TrnFind.Count() > 0)
-            //{
-            //    foreach(var ftrn in TrnFind)
-            //    {
-            //        TrnFindNew = new Trn
-            //        {
-            //            AcMaster=ftrn.AcMaster,
-            //            AcMasterID = ftrn.AcMasterID,
-            //            Acno = ftrn.Acno,
-            //            Amount = ftrn.Amount,
-            //            BookMaster = ftrn.BookMaster,
-            //            BookMasterID = ftrn.BookMasterID,
-            //            BookNo = ftrn.BookNo,
-            //            BranchCode = ftrn.BranchCode,
-            //            ChequeNo = ftrn.ChequeNo,
-            //            ChqBr = ftrn.ChqBr,
-            //            Comp_Id = ftrn.Comp_Id,
-            //            CostCenter=ftrn.CostCenter,
-            //            CostCenterID = ftrn.CostCenterID,
-            //            Dc = ftrn.Dc,
-            //            Entrydate = ftrn.Entrydate,
-            //            Ledger=ftrn.Ledger,
-            //            LedgerID = ftrn.LedgerID,
-            //            Narr1 = ftrn.Narr1,
-            //            Narr2 = ftrn.Narr2,
-            //            Narr3 = ftrn.Narr3,
-            //            PairNo = ftrn.PairNo,
-            //            RefModuleCode = ftrn.RefModuleCode,
-            //            ShareTrnNo = ftrn.ShareTrnNo,
-            //            Slcd = ftrn.Slcd,
-            //            SubLedger=ftrn.SubLedger,
-            //            SubLcd = ftrn.SubLcd,
-            //            SubLedgerID = ftrn.SubLedgerID,
-            //            SvNo = ftrn.SvNo,
-            //            TrnID = ftrn.TrnID,
-            //            Username = ftrn.Username,
-            //            Vdt = ftrn.Vdt,
-            //            Vno = ftrn.Vno
-            //        };
-            //    }
-            //}
-            //Trn = (Trn)await TrnService.GetTrns();
-            #endregion
             StateHasChanged();
         }
         protected void BookChange(string value)
@@ -157,56 +127,13 @@ namespace BSSApp.FA.Web.Pages
         }
         protected async void Voucher_Change(string Vno)
         {
-            VoucherNo = Vno;
+            VoucherNoFind = Vno;
             string[] get_values = Vno.Split(",");
             int get_bookno = Int32.Parse(get_values[1]);
             DateTime get_vdt = Convert.ToDateTime(get_values[2]);
             string get_vno = get_values[3];
             TrnFindNew = await TrnService.GetTrnsVno(get_vno, get_vdt, get_bookno);
             StateHasChanged();
-            #region old code
-            //if (TrnFindNew.Count() > 0)
-            //{
-            //    foreach (var ftrn in TrnFindNew)
-            //    {
-            //        Trn = new Trn
-            //        {
-            //            AcMaster = ftrn.AcMaster,
-            //            AcMasterID = ftrn.AcMasterID,
-            //            Acno = ftrn.Acno,
-            //            Amount = ftrn.Amount,
-            //            BookMaster = ftrn.BookMaster,
-            //            BookMasterID = ftrn.BookMasterID,
-            //            BookNo = ftrn.BookNo,
-            //            BranchCode = ftrn.BranchCode,
-            //            ChequeNo = ftrn.ChequeNo,
-            //            ChqBr = ftrn.ChqBr,
-            //            Comp_Id = ftrn.Comp_Id,
-            //            CostCenter = ftrn.CostCenter,
-            //            CostCenterID = ftrn.CostCenterID,
-            //            Dc = ftrn.Dc,
-            //            Entrydate = ftrn.Entrydate,
-            //            Ledger = ftrn.Ledger,
-            //            LedgerID = ftrn.LedgerID,
-            //            Narr1 = ftrn.Narr1,
-            //            Narr2 = ftrn.Narr2,
-            //            Narr3 = ftrn.Narr3,
-            //            PairNo = ftrn.PairNo,
-            //            RefModuleCode = ftrn.RefModuleCode,
-            //            ShareTrnNo = ftrn.ShareTrnNo,
-            //            Slcd = ftrn.Slcd,
-            //            SubLedger = ftrn.SubLedger,
-            //            SubLcd = ftrn.SubLcd,
-            //            SubLedgerID = ftrn.SubLedgerID,
-            //            SvNo = ftrn.SvNo,
-            //            TrnID = ftrn.TrnID,
-            //            Username = ftrn.Username,
-            //            Vdt = ftrn.Vdt,
-            //            Vno = ftrn.Vno
-            //        };
-            //    }
-            //}
-            #endregion
         }
         protected void AddVoucher()
         {
@@ -257,6 +184,8 @@ namespace BSSApp.FA.Web.Pages
         {
             IsDisableVoucherDateAndBook = true;
             Dis_voucherTable = true;
+            DisableVoucherSaveButton = false;
+            //VoucherNumberSaved = "0000025";
             #region old code
             /*
             //Trnm = new List<Trn>()
@@ -334,17 +263,17 @@ namespace BSSApp.FA.Web.Pages
                         SvNo = ( Ctr == 0 ? 1 : MyList.Max(a=> a.SvNo) + 1 ),
                         Username = "admin",
                         Vdt = VoucherDate,
-                        Vno = "0000001"
+                        Vno =VoucherNumberSaved
                     });
             Ctr += 1;
             SVNo = Ctr;
             if (DebitCredit == "D")
             {
-                DrAmount = DrAmount + Amount;
+                DrAmount =+ Amount;
             }
             else
             {
-                CrAmount = CrAmount + Amount;
+                CrAmount =+ Amount;
             }
         }
        protected void VoucherPageReload()
@@ -353,15 +282,17 @@ namespace BSSApp.FA.Web.Pages
         }
         protected void FetchRow(Trn trn_ml)
         {
+            string[] selectedAcnoName;
+            string select_acno;string select_acname;
             FromTableRowSelect = true;
-            updateSubVoucherDisplay = true;
-            string[] selectedAcnoName = trn_ml.Acno.Split("#");
-            string selectedAcno = selectedAcnoName[0];
-            string selectedName = selectedAcnoName[1];
+            UpdateSubVoucherDisplay = true;
+            selectedAcnoName = trn_ml.Acno.Split("#");
+            select_acno = selectedAcnoName[0].Trim();
+            select_acname= selectedAcnoName[1].Trim();
             string selectedLedger= trn_ml.LedgerID.ToString() + "," + trn_ml.Slcd;
             Ledger_Change(selectedLedger);
             FetchSubLedger = trn_ml.SubLedgerID.ToString() + "," + trn_ml.SubLcd;
-            FetchAccountCode = trn_ml.AcMasterID.ToString().Trim() + "," + selectedAcnoName[0].Trim() + "," + selectedAcnoName[1].Trim();
+            FetchAccountCode = trn_ml.AcMasterID.ToString().Trim() + "," + select_acno + "," + select_acname;
             CostCenterID = trn_ml.CostCenterID.ToString();
             Narration1 = trn_ml.Narr1;
             SVNo = trn_ml.SvNo;
@@ -375,7 +306,8 @@ namespace BSSApp.FA.Web.Pages
         {
             DrAmount = 0;
             CrAmount = 0;
-            updateSubVoucherDisplay = false;
+            UpdateSubVoucherDisplay = false;
+            DisableVoucherSaveButton = false;
             string[] updAcno =FetchAccountCode.Split(",");
             string toUpdAcno = updAcno[1] + "#" + updAcno[2];
             string updAcMasterID = updAcno[0];
@@ -398,14 +330,62 @@ namespace BSSApp.FA.Web.Pages
         }
         protected void SaveVoucher()
         {
-            //string myval;
-            //myval = "1000";
+            UpdateSubVoucherDisplay = false;
+            NewVoucherSave();
+        }
+        protected void VoucherDateChange()
+        {
+            FetchBookNo = "0";
+            Dis_Find = false;
+            VoucherNoFind = "0";
+            TrnFindNew=null;
+        }
+        protected async void NewVoucherSave()
+        {
+            string[] SelectBkNo = FetchBookNo.Split(",");
+            int SelectedBookNo = int.Parse(SelectBkNo[1]);
+            TrnFindMaxVno = await TrnService.GetMaxVNoMonthlyYearly("monthly", VoucherDate, SelectedBookNo);
+            if (TrnFindMaxVno == null)
+            {
+                VoucherNumberSaved = Convert.ToDouble("1").ToString("0000000");
+            }
+            else
+            {
+                VoucherNumberSaved = (Convert.ToDouble(TrnFindMaxVno.Max(x => x.Vno)) + 1).ToString("0000000");
+            }
+            StateHasChanged();
+            List<string> acnoNm = new List<string>();
+            foreach (var myval in MyList)
+            {
+                acnoNm.Add(myval.SvNo.ToString() + ':' + myval.Acno.ToString());
+            }
             var SaveTrn = MyList;
-            SaveTrn.ForEach(x => x.Acno = x.Acno.Substring(0, x.Acno.IndexOf("#")));
-            //foreach(var saveTrn in SaveTrn)
+            SaveTrn.ForEach(x => { x.Acno = x.Acno.Substring(0, x.Acno.IndexOf("#")); x.Vno = VoucherNumberSaved; });
+            //foreach (var saveTrn in SaveTrn)
             //{
-            //    TrnService.AddTrn(saveTrn);
+            //    var result=await TrnService.AddTrn(saveTrn);
+            //    if (result!=null)
+            //    {
+            //        VoucherNumberSaved = result.Vno;
+            //    }
             //}
+            string[] ValUpdate;
+            string newAcno;
+            int sv_no;
+            for (int i = 0; i <= acnoNm.Count - 1; i++)
+            {
+                ValUpdate = acnoNm[i].Split(":");
+                sv_no = int.Parse(ValUpdate[0]);
+                newAcno = ValUpdate[1];
+                MyList.Where(x => x.SvNo == sv_no).ToList().ForEach(x => x.Acno = newAcno);
+            }
+            DisableVoucherSaveButton = true;
+            StateHasChanged();
+        }
+        protected void DrCrChange(string DrCr)
+        {
+            DebitCredit = DrCr;
+            DisableAdd_SubVoucherButton = false;
         }
     }
     

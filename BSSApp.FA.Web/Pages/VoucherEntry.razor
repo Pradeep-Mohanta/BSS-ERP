@@ -10,7 +10,8 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Voucher Date</label>
             <div class="col-sm-4">
-                <InputDate id="vdt" disabled="@IsDisableVoucherDateAndBook" class="form-control" @bind-Value="VoucherDate">
+                <InputDate id="vdt" disabled="@IsDisableVoucherDateAndBook" 
+                           class="form-control" @bind-Value="VoucherDate">
 
                 </InputDate>
             </div>
@@ -62,8 +63,8 @@
 
                         <CustomInputSelect id="FindVno" class="form-control"
                                            ValueChanged="@((string value)=>Voucher_Change(value))"
-                                           ValueExpression="@(()=>VoucherNo)"
-                                           Value="VoucherNo">
+                                           ValueExpression="@(()=>VoucherNoFind)"
+                                           Value="VoucherNoFind">
                             <option value="0">Select Voucher</option>
                             @foreach (var findV in TrnFind)
                             {
@@ -74,41 +75,44 @@
                 </div>
             </div>
             <div class="col-12">
-                @if (TrnFindNew.Count() > 0)
+                @if (TrnFindNew != null)
                 {
-                    <table class="table table-light">
-                        <thead>
-                            <tr>
-                                <td>Vno</td>
-                                <td>Svno</td>
-                                <td>AcNo</td>
-                                <td>AcName</td>
-                                <td>Narration</td>
-                                <td>Debit</td>
-                                <td>Credit</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var filterTrn in TrnFindNew)
-                            {
+                    @if (TrnFindNew.Count() > 0)
+                    {
+                        <table class="table table-light">
+                            <thead>
                                 <tr>
-                                    <td>@filterTrn.Vno</td>
-                                    <td>@filterTrn.SvNo</td>
-                                    <td>@filterTrn.Acno</td>
-                                    <td>@filterTrn.AcMaster.Acname</td>
-                                    <td>@filterTrn.Narr1 @filterTrn.Narr2</td>
-                                    <td>
-                                        @if (filterTrn.Dc == "D")
-                                        {@filterTrn.Amount}
-                                    </td>
-                                    <td>
-                                        @if (filterTrn.Dc == "C")
-                                        {@filterTrn.Amount}
-                                    </td>
+                                    <td>Vno</td>
+                                    <td>Svno</td>
+                                    <td>AcNo</td>
+                                    <td>AcName</td>
+                                    <td>Narration</td>
+                                    <td>Debit</td>
+                                    <td>Credit</td>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var filterTrn in TrnFindNew)
+                                {
+                                    <tr>
+                                        <td>@filterTrn.Vno</td>
+                                        <td>@filterTrn.SvNo</td>
+                                        <td>@filterTrn.Acno</td>
+                                        <td>@filterTrn.AcMaster.Acname</td>
+                                        <td>@filterTrn.Narr1 @filterTrn.Narr2</td>
+                                        <td>
+                                            @if (filterTrn.Dc == "D")
+                                            {@filterTrn.Amount}
+                                        </td>
+                                        <td>
+                                            @if (filterTrn.Dc == "C")
+                                            {@filterTrn.Amount}
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
                 }
             </div>
         }
@@ -212,14 +216,30 @@
                     <InputText id="ChequeNo" class="form-control" @bind-Value="ChequeNo">
                     </InputText>
                 </div>
-                <label class="col-sm-1 col-form-label">SVNo</label>
-                <div><InputNumber id="SvNo" style="width:50px" disabled="true" class="form-control" @bind-Value="SVNo"></InputNumber></div>
+                <label class="col-sm-1 col-form-label">VNo</label>
+                <div><InputText id="SvNo" style="width:90px" disabled="true" class="form-control" @bind-Value="VoucherNumberSaved"></InputText></div>
+                @*<label class="col-sm-1 col-form-label"></label>
+        <div>
+            <span class="oi oi-caret-left">
+
+            </span>
+        </div>*@
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Pair No</label>
                 <div class="col-sm-4">
-                    <InputText id="PairNo" class="form-control" @bind-Value="PairNo">
-                    </InputText>
+                    <InputText id="PairNo" class="form-control" @bind-Value="PairNo"></InputText>
+                </div>
+                <label class="col-sm-1 col-form-label">SVNo</label>
+                <div><InputNumber id="SvNo" style="width:90px" disabled="true" class="form-control" @bind-Value="SVNo"></InputNumber></div>
+                @*<label class="col-sm col-form-label"></label>*@
+                <div class="col-sm-2">
+                    @if (UpdateSubVoucherDisplay)
+                    {
+                    <span class="oi oi-caret-left">
+                        <a class="btn btn-success" style="width:170px;color:white" @onclick="@(()=>UpdateSubVoucher(MyList))">Update SubVoucher</a>
+                    </span>
+                    }
                 </div>
             </div>
             <div class="form-group row">
@@ -228,28 +248,27 @@
                     <InputNumber id="Amount" class="form-control" @bind-Value="Amount">
                     </InputNumber>
                 </div>
-                @if(updateSubVoucherDisplay)
-                { 
-                @*<button type="submit" class="btn btn-success btn-width" style="width:170px" @onclick="@(()=>UpdateSubVoucher(MyList))">
-                    Update SubVoucher
-                </button>*@
-                    <a class="btn btn-success" style="width:170px;color:white" @onclick="@(()=>UpdateSubVoucher(MyList))">Update SubVoucher</a>
-                }
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Debit/Credit</label>
                 <div class="col-sm-4">
-                    <InputSelect id="DrCr" class="form-control" @bind-Value="DebitCredit">
+                    <InputSelect id="DrCr" class="form-control"
+                                 ValueChanged="@((string DrCrVal)=>DrCrChange(DrCrVal))"
+                                 ValueExpression="@(()=>DebitCredit)"
+                                 Value="DebitCredit">
                         <option>Select Trn</option>
                         <option value="D">Debit</option>
                         <option value="C">Credit</option>
                     </InputSelect>
                 </div>
-                <a class="btn btn-success" style="width:170px;color:white" @onclick="AddSubVoucher">Add SubVoucher</a>
-                    <button type="submit" class="btn btn-success btn-width" style="width:170px">
-                    Save SubVoucher
-                </button>
-                
+                <div class="col-sm-2 col-form-label">
+                    @*<a class="btn btn-success" style="width:170px;color:white" disabled="true" @onclick="AddSubVoucher">Add SubVoucher</a>*@
+                    <button class="btn btn-success" style="width:170px;color:white" disabled="@DisableAdd_SubVoucherButton" @onclick="AddSubVoucher">Add SubVoucher</button>
+                </div>
+                @*<span style="color:white">....</span>*@
+                <div>
+                      <button type="submit" class="btn btn-success btn-width" disabled="@DisableVoucherSaveButton" style="width:170px">Save Voucher</button>
+                </div>
             </div>
             @if (MyList == null)
             {
@@ -262,6 +281,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th style="border:1px solid green">VNo</th>
                                 <th style="border:1px solid green">Vdt</th>
                                 <th style="border:1px solid green">SvNo</th>
                                 <th style="border:1px solid green">Ledger</th>
@@ -275,28 +295,30 @@
 
                         @foreach (var ml in MyList)
                         {
-                            <tr>
-                                <td style="border:1px solid green;vertical-align:top">@ml.Vdt.Date</td>
-                                <td style="border:1px solid green;vertical-align:top">@ml.SvNo</td>
-                                <td style="border:1px solid green;vertical-align:top">@ml.Slcd</td>
-                                <td style="border:1px solid green;vertical-align:top">@ml.SubLcd</td>
-                                <td style="border:1px solid green;vertical-align:top">@ml.Acno</td>
-                                <td style="border:1px solid green;vertical-align:top">@ml.Narr1</td>
-                                <td style="border:1px solid green;vertical-align:top;text-align:center">@(ml.Dc == "D" ? @ml.Amount : 0)</td>
-                                <td style="border:1px solid green;vertical-align:top;text-align:center">@(ml.Dc == "C" ? @ml.Amount : 0)</td>
-                                <td style="border:none"><span class=""></span> <a class="btn btn-primary" style="color:white" @onclick="@(()=>FetchRow(ml))">Select</a></td>
-                            </tr>
+                    <tr>
+                        <td style="border:1px solid green;vertical-align:top">@ml.Vno</td>
+                        <td style="border:1px solid green;vertical-align:top">@ml.Vdt.Date</td>
+                        <td style="border:1px solid green;vertical-align:top">@ml.SvNo</td>
+                        <td style="border:1px solid green;vertical-align:top">@ml.Slcd</td>
+                        <td style="border:1px solid green;vertical-align:top">@ml.SubLcd</td>
+                        <td style="border:1px solid green;vertical-align:top">@ml.Acno</td>
+                        <td style="border:1px solid green;vertical-align:top">@ml.Narr1</td>
+                        <td style="border:1px solid green;vertical-align:top;text-align:center">@(ml.Dc == "D" ? @ml.Amount : 0)</td>
+                        <td style="border:1px solid green;vertical-align:top;text-align:center">@(ml.Dc == "C" ? @ml.Amount : 0)</td>
+                        <td style="border:none"><span class=""></span> <a class="btn btn-primary" style="color:white" @onclick="@(()=>FetchRow(ml))">Select</a></td>
+                    </tr>
                         }
-                        <tr style="border:1px solid green;background-color:yellow">
-                            <td style="border:1px solid green;vertical-align:top"></td>
-                            <td style="border:1px solid green;vertical-align:top"></td>
-                            <td style="border:1px solid green;vertical-align:top"></td>
-                            <td style="border:1px solid green;vertical-align:top"></td>
-                            <td style="border:1px solid green;vertical-align:top;font-weight:bolder">Total </td>
-                            <td style="border:1px solid green;vertical-align:top"> </td>
-                            <td style="border:1px solid green;vertical-align:top;text-align:center;font-weight:bolder">@DrAmount</td>
-                            <td style="border:1px solid green;vertical-align:top;text-align:center;font-weight:bolder">@CrAmount</td>
-                        </tr>
+                    <tr style="border:1px solid green;background-color:yellow">
+                        <td style="border:1px solid green;vertical-align:top"></td>
+                        <td style="border:1px solid green;vertical-align:top;font-weight:bolder">Total</td>
+                        <td style="border:1px solid green;vertical-align:top"></td>
+                        <td style="border:1px solid green;vertical-align:top"></td>
+                        <td style="border:1px solid green;vertical-align:top"></td>
+                        <td style="border:1px solid green;vertical-align:top"></td>
+                        <td style="border:1px solid green;vertical-align:top"></td>
+                        <td style="border:1px solid green;vertical-align:top;text-align:center;font-weight:bolder">@DrAmount</td>
+                        <td style="border:1px solid green;vertical-align:top;text-align:center;font-weight:bolder">@CrAmount</td>
+                    </tr>
                     </table>
                 }
 

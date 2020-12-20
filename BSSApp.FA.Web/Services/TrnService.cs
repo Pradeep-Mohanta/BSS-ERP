@@ -21,6 +21,8 @@ namespace BSSApp.FA.Web.Services
             return await httpClient.PostJsonAsync<Trn>("api/trn",newTrn);
         }
 
+       
+
         public async Task<Trn> GetTrn(int id)
         {
             return await httpClient.GetJsonAsync<Trn>($"api/trn/{id}");
@@ -36,9 +38,13 @@ namespace BSSApp.FA.Web.Services
             return httpClient.GetJsonAsync<Trn[]>($"api/trn/voucherVno?Vno={Vno}&Vdt={vdt}&BookNo={BookNo}");
         }
 
-        public Task<Trn[]> GetTrnVdtBook(DateTime vdt, int BookNo)
+        public async Task<Trn[]> GetTrnVdtBook(DateTime vdt, int BookNo)
         {
-            return httpClient.GetJsonAsync<Trn[]>($"api/trn/voucherVdt?Vdt={vdt}&BookNo={BookNo}");
+            return await httpClient.GetJsonAsync<Trn[]>($"api/trn/voucherVdt?Vdt={vdt}&BookNo={BookNo}");
+        }
+        public async Task<Trn[]> GetMaxVNoMonthlyYearly(string monthOrYear, DateTime vdt, int BookNo)
+        {
+            return await httpClient.GetJsonAsync<Trn[]>($"api/trn/maxvoucherno?monthOrYear={monthOrYear}&vdt={vdt}&BookNo={BookNo}");
         }
     }
 }

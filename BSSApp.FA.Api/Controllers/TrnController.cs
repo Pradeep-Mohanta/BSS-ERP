@@ -43,7 +43,11 @@ namespace BSSApp.FA.Api.Controllers
         {
             return Ok(await trnRepository.GetTrnsVno(Vno, Vdt, BookNo));
         }
-
+        [HttpGet("maxvoucherno")]
+        public async Task<ActionResult> GetMaxVNoMonthlyYearly(string monthOrYear, DateTime Vdt, int BookNo)
+        {
+            return Ok(await trnRepository.GetMaxVNoMonthlyYearly(monthOrYear, Vdt, BookNo));
+        }
         [HttpGet("vouchervdt")]
         public async Task<ActionResult> GetTrnVdtBook(DateTime Vdt, int BookNo)
         {
